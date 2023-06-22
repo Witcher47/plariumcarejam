@@ -645,6 +645,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Preloader
       objectReference: {fileID: 0}
+    - target: {fileID: 5059317196663685814, guid: a1dcd10dec342904581c7dd64aafd94b, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5059317196663685815, guid: a1dcd10dec342904581c7dd64aafd94b, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -731,6 +735,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 5059317196663685816, guid: a1dcd10dec342904581c7dd64aafd94b, type: 3}
+    - {fileID: 8292390040581786415, guid: a1dcd10dec342904581c7dd64aafd94b, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: a1dcd10dec342904581c7dd64aafd94b, type: 3}
 --- !u!1 &1854940598 stripped
 GameObject:

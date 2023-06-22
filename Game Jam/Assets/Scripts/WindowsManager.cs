@@ -19,7 +19,9 @@ public class WindowsManager : MonoBehaviour
   {
     vp.Stop();
     Intro.active = false;
-    PreloaderAnimator.Instance.Play("Start_Level");
+    //PreloaderAnimator.Instance.Play("Start_Level");
+    //PreloaderAnimator.Instance.Play("Game_Over2");
+    PreloaderAnimator.Instance.Play("Start_Level2");
   }
 
   public void ToNextState()
