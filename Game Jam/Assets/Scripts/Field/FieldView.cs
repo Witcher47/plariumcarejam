@@ -21,13 +21,19 @@ namespace Game.Field
         [SerializeField] private Vector2 _cellSize;
         [SerializeField] private CellView _cellPrefab;
         [SerializeField] private Camera _camera;
-        
-        private Cell[,] _field;
+        [SerializeField] public bool UseSound = false;
+
+    private AudioSource _audioSource;
+
+    private Cell[,] _field;
         private ICellMoveStrategy _moveStrategy;
 
         private void Start()
         {
             _moveStrategy = new CellMoveStrategyBase(_camera);
+            if(UseSound)
+              _audioSource = GetComponent<AudioSource>();
+             
         }
         
         public void Build(Level level)
@@ -97,6 +103,9 @@ namespace Game.Field
         private void OnStartDrag(CellView view)
         {
             _moveStrategy.StartMove(view.transform.position);
+      
+           if(UseSound)
+            _audioSource.Play();
         }
         
         private void OnDragCell(CellView view)
@@ -116,6 +125,8 @@ namespace Game.Field
 
         private void OnDragComplete(CellView view)
         {
+           if(UseSound)
+            _audioSource.Stop();
             var possiblePosition = view.WorldPosition + (Vector3)(_field[view.CellPosition.X, view.CellPosition.Y].Direction * _cellSize);
             var startPosition = view.WorldPosition;
             var currentPosition = view.transform.position;
