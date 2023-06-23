@@ -20,6 +20,8 @@ namespace Game
         private int _curLevelIdx;
         private FieldView _curGameField;
 
+        private bool levelIsLoaded;
+
         private void Awake()
         {
             DontDestroyOnLoad(gameObject);
@@ -32,6 +34,8 @@ namespace Game
 
         private IEnumerator Load()
         {
+            if(levelIsLoaded)
+              SceneManager.UnloadSceneAsync(CurLevelName);
             var asyncLoad = SceneManager.LoadSceneAsync(CurLevelName, LoadSceneMode.Additive);
             
             Debug.Log("Loading progress:");
@@ -44,6 +48,7 @@ namespace Game
 
             PrepareScene();
             BuildLevel();
+            levelIsLoaded = true;
         }
 
         private void PrepareScene()
