@@ -19,6 +19,7 @@ namespace Assets.Scripts
       Victory.GetComponentInChildren<ButtonRestartScript>().ActionDelegate += Restart;
       GameOver.GetComponentInChildren<ButtonExitScript>().ActionDelegate += ExitGame;
       GameOver.GetComponentInChildren<ButtonRestartScript>().ActionDelegate += Restart;
+      Logo.GetComponentInChildren<ButtonScript>().ActionDelegate += ShowLevel;
 
       Level1.active = false;
       Victory.active = false;
@@ -36,13 +37,22 @@ namespace Assets.Scripts
       //Level1.active = true;
       PreloaderAnimator.Instance.Play("Start_Level2");
       //PreloaderAnimator.Instance.Play("Game_Over2");
-      Level1.active = true;
+      Logo.active = true;
+      Level1.active = false;
       //vp.Stop();
       Intro.active = false;
+      Victory.active = false;
+      GameOver.active = false;
     }
 
     public void ShowLevel()
-    { 
+    {
+      PreloaderAnimator.Instance.Play("Start_Level2");
+      Level1.active = true;
+      Logo.active = false;
+      Intro.active = false;
+      Victory.active = false;
+      GameOver.active = false;
       currentLevel = 1;
     }
 
