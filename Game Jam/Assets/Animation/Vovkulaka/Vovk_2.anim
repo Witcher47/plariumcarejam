@@ -6,7 +6,7 @@ AnimationClip:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Angry
+  m_Name: Vovk_2
   serializedVersion: 6
   m_Legacy: 0
   m_Compressed: 0
@@ -20,13 +20,11 @@ AnimationClip:
   m_PPtrCurves:
   - curve:
     - time: 0
-      value: {fileID: 21300000, guid: 74b0e2e03a2f8aa4087213ecc2733228, type: 3}
-    - time: 0.21666667
-      value: {fileID: 21300000, guid: 3505c7783438e824ab04606f2ff278d6, type: 3}
-    - time: 0.41666666
-      value: {fileID: 21300000, guid: 2cffea35a3e0e2c478c9203580b25525, type: 3}
-    - time: 0.48333332
-      value: {fileID: 21300000, guid: 2cffea35a3e0e2c478c9203580b25525, type: 3}
+      value: {fileID: 21300000, guid: 9337f7a70a99d2549b7ea1f538293e4d, type: 3}
+    - time: 0.16666667
+      value: {fileID: 21300000, guid: e3ec51c577d026d4da16122968be2a17, type: 3}
+    - time: 0.33333334
+      value: {fileID: 21300000, guid: 5e88c2124c61e044aa28bfa231a5bb53, type: 3}
     attribute: m_Sprite
     path: 
     classID: 212
@@ -46,16 +44,15 @@ AnimationClip:
       customType: 23
       isPPtrCurve: 1
     pptrCurveMapping:
-    - {fileID: 21300000, guid: 74b0e2e03a2f8aa4087213ecc2733228, type: 3}
-    - {fileID: 21300000, guid: 3505c7783438e824ab04606f2ff278d6, type: 3}
-    - {fileID: 21300000, guid: 2cffea35a3e0e2c478c9203580b25525, type: 3}
-    - {fileID: 21300000, guid: 2cffea35a3e0e2c478c9203580b25525, type: 3}
+    - {fileID: 21300000, guid: 9337f7a70a99d2549b7ea1f538293e4d, type: 3}
+    - {fileID: 21300000, guid: e3ec51c577d026d4da16122968be2a17, type: 3}
+    - {fileID: 21300000, guid: 5e88c2124c61e044aa28bfa231a5bb53, type: 3}
   m_AnimationClipSettings:
     serializedVersion: 2
     m_AdditiveReferencePoseClip: {fileID: 0}
     m_AdditiveReferencePoseTime: 0
     m_StartTime: 0
-    m_StopTime: 0.5
+    m_StopTime: 0.35000002
     m_OrientationOffsetY: 0
     m_Level: 0
     m_CycleOffset: 0
