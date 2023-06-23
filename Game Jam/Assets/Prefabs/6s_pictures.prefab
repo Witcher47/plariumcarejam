@@ -208,6 +208,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1785921664347040253}
   - component: {fileID: 7222358835999598754}
+  - component: {fileID: -927678232078128909}
   m_Layer: 0
   m_Name: 6s_pictures
   m_TagString: Untagged
@@ -245,6 +246,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 282be265b96641ad9580bf686ba2c367, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!65 &-927678232078128909
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6126687709540289010}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.3, y: 1.21, z: 1.62}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &7539498205735482168
 GameObject:
   m_ObjectHideFlags: 0
