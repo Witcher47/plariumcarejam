@@ -19,11 +19,6 @@ namespace Game.Field
 
     private bool _dragInProgress;
 
-    private void Start()
-    {
-      GetComponent<MeshRenderer>().material.color = Color.white * Random.value;
-    }
-
     public void SetPosition(Vector2int cellPosition)
     {
       CellPosition = cellPosition;

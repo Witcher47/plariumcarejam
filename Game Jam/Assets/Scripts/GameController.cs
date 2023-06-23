@@ -74,11 +74,19 @@ namespace Game
     public class Level
     {
         public Vector2int Size;
+        public LevelCell[] Cells;
         public Vector2int EmptyPosition;
 
         public bool IsEmptyPosition(int x, int y) => EmptyPosition.X == x && EmptyPosition.Y == y;
     }
-    
+
+    [Serializable]
+    public class LevelCell
+    {
+        public Vector2int Position;
+        public CellView Prefab;
+    }
+
     [Serializable]
     public struct Vector2int
     {

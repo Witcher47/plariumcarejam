@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using Game.Tools;
 using UnityEngine;
 
@@ -19,7 +20,6 @@ namespace Game.Field
         }
         
         [SerializeField] private Vector2 _cellSize;
-        [SerializeField] private CellView _cellPrefab;
         [SerializeField] private Camera _camera;
         [SerializeField] public bool UseSound = false;
 
@@ -46,8 +46,10 @@ namespace Game.Field
                     _field[i, j] = new Cell(Vector3.zero, level.IsEmptyPosition(i + 1, j + 1));
                     if (_field[i, j].IsFree)
                         continue;
-                    
-                    var cellView = Instantiate(_cellPrefab, new Vector3(_cellSize.x * i, -_cellSize.y * j, 0f), Quaternion.identity, transform);
+
+                    var cellPrefab = level.Cells.First(x => x.Position.X == i && x.Position.Y == j).Prefab;
+                    var cellView = Instantiate(cellPrefab, new Vector3(_cellSize.x * i, -_cellSize.y * j, 0f), Quaternion.Euler(0, 90, 0));
+                    cellView.transform.SetParent(transform, false);
                     cellView.SetPosition(new Vector2int(i, j));
                     cellView.OnStartDrag += OnStartDrag;
                     cellView.OnDrag += OnDragCell;
