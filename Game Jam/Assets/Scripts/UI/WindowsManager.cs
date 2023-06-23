@@ -23,7 +23,7 @@ namespace Assets.Scripts
       GameOver.GetComponentInChildren<ButtonExitScript>().ActionDelegate += ExitGame;
       GameOver.GetComponentInChildren<ButtonRestartScript>().ActionDelegate += Restart;
       Logo.GetComponentInChildren<ButtonScript>().ActionDelegate += ShowLevel;
-      GameUi.GetComponentInChildren<ButtonScript>().ActionDelegate += ShowMenu;
+      //GameUi.GetComponentInChildren<ButtonScript>().ActionDelegate += ShowMenu;
       Menu.GetComponentInChildren<ButtonExitScript>().ActionDelegate += ExitGame;
       Menu.GetComponentInChildren<ButtonRestartScript>().ActionDelegate += Restart;
       gameController = GetComponent<GameController>();
