@@ -1107,7 +1107,7 @@ MonoBehaviour:
   Logo: {fileID: 2022099583}
   Victory: {fileID: 1606757214}
   GameOver: {fileID: 2101969827}
-  CommentsText: {fileID: 1567449073}
+  GameUi: {fileID: 1567449073}
 --- !u!114 &821896099
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3107,7 +3107,7 @@ GameObject:
   - component: {fileID: 1567449074}
   - component: {fileID: 1567449078}
   m_Layer: 5
-  m_Name: CommentsText
+  m_Name: GameUi
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

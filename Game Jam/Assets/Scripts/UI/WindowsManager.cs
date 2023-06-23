@@ -10,7 +10,9 @@ namespace Assets.Scripts
     public GameObject Logo;
     public GameObject Victory;
     public GameObject GameOver;
-    public GameObject CommentsText;
+    public GameObject GameUi;
+    public GameObject Menu;
+    private GameController gameController;
 
     private int currentLevel = 0;
 
@@ -21,12 +23,17 @@ namespace Assets.Scripts
       GameOver.GetComponentInChildren<ButtonExitScript>().ActionDelegate += ExitGame;
       GameOver.GetComponentInChildren<ButtonRestartScript>().ActionDelegate += Restart;
       Logo.GetComponentInChildren<ButtonScript>().ActionDelegate += ShowLevel;
-      
-      Victory.active = false;
-      GameOver.active = false;
-      CommentsText.active = false;
+      GameUi.GetComponentInChildren<ButtonScript>().ActionDelegate += ShowMenu;
+      Menu.GetComponentInChildren<ButtonExitScript>().ActionDelegate += ExitGame;
+      Menu.GetComponentInChildren<ButtonRestartScript>().ActionDelegate += Restart;
+      gameController = GetComponent<GameController>();
 
-      Intro.active = true;
+      Victory.SetActive(false);
+      GameOver.SetActive(false);
+      GameUi.SetActive(false);
+      Menu.SetActive(false);
+
+      Intro.SetActive(true);
       var introVideo = Intro.GetComponentInChildren<VideoPlayer>();
       //introVideo.Play();
       //introVideo.loopPointReached += ShowLogo;
@@ -34,41 +41,62 @@ namespace Assets.Scripts
       ShowLogo(introVideo);
     }
 
-    public void ShowLogo(VideoPlayer vp)
+    public void ShowLogo(VideoPlayer vp = null)
     {
+      if(vp != null)
       vp.Stop();
-      //Level1.active = true;
       PreloaderAnimator.Instance.Play("Start_Level2");
       //PreloaderAnimator.Instance.Play("Game_Over2");
-      Logo.active = true;
-      //vp.Stop();
-      Intro.active = false;
-      Victory.active = false;
-      GameOver.active = false;
-      CommentsText.active = false;
+      Logo.SetActive(true);
+      Intro.SetActive(false);
+      Victory.SetActive(false);
+      GameOver.SetActive(false);
+      GameUi.SetActive(false);
     }
 
     public void ShowLevel()
     {
-      var gameController = GetComponent<GameController>();
       PreloaderAnimator.Instance.Play("Start_Level2");
-      Logo.active = false;
-      Intro.active = false;
-      Victory.active = false;
-      GameOver.active = false;
+      Logo.SetActive(false);
+      Intro.SetActive(false);
+      Victory.SetActive(false);
+      GameOver.SetActive(false);
       gameController.StartLevel();
-      CommentsText.active = true;
+      GameUi.SetActive(true);
       currentLevel = 1;
       TextManager.Instance.SetText(0);
     }
 
+    public void ShowMenu()
+    {
+      Menu.SetActive(true);
+      Logo.SetActive(false);
+      Intro.SetActive(false);
+      Victory.SetActive(false);
+      GameOver.SetActive(false);
+      GameUi.SetActive(true);
+    }
+
     public void ShowGameOver()
-    { 
+    {
+      GameOver.SetActive(true);
+      Menu.SetActive(false);
+      Logo.SetActive(false);
+      Intro.SetActive(false);
+      Victory.SetActive(false);
+      GameUi.SetActive(false);
     }
 
     public void ShowVictory()
     {
       currentLevel = 0;
+
+      Victory.SetActive(true);
+      GameOver.SetActive(false);
+      Menu.SetActive(false);
+      Logo.SetActive(false);
+      Intro.SetActive(false);
+      GameUi.SetActive(false);
     }
 
     public void Restart()
@@ -77,12 +105,12 @@ namespace Assets.Scripts
       {
         case 1:
           {
-            ShowLevel();
+            gameController.StartLevel();
             break;
           }
         default:
           {
-            //ShowLogo();
+            ShowLogo();
             break;
           }
       }
@@ -92,5 +120,6 @@ namespace Assets.Scripts
     {
       Application.Quit();
     }
+
   }
 }
