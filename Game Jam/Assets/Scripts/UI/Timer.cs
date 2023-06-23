@@ -13,7 +13,6 @@ namespace Assets.Scripts.UI
   {
     public static Timer Instance;
     private TMP_Text _textMesh;
-    private string _startTimer = "02:00";
     private Coroutine _displayCoroutine;
 
     float currentTime = 0f;
@@ -27,23 +26,8 @@ namespace Assets.Scripts.UI
       _textMesh = GetComponent<TMP_Text>();
     }
 
-    //private void Update()
-    //{
-    //  currentTime -= Time.deltaTime;
-    //  if (currentTime <= _stopTime)
-    //  {
-    //    currentTime = _stopTime;
-    //    SetTimerText();
-    //    _textMesh.color = Color.red;
-    //    enabled = false;
-    //  }
-    //  SetTimerText();
-    //}
-
     public void StartTimer(float startingTime)
     {
-      RestartTimer();
-
       _startTime = startingTime;
       if (_displayCoroutine != null)
       {
@@ -51,6 +35,7 @@ namespace Assets.Scripts.UI
       }
       currentTime = _startTime;
       isRunning = true;
+
       _displayCoroutine = StartCoroutine("DisplayTimer");
     }
 
@@ -64,19 +49,9 @@ namespace Assets.Scripts.UI
       }
     }
 
-    public void RestartTimer()
-    {
-      _textMesh.text = _startTimer;
-      if (_displayCoroutine != null)
-      {
-        StopCoroutine(_displayCoroutine);
-        _displayCoroutine = null;
-      }
-    }
-
     public void ResumeTimer()
     {
-      _textMesh.text = _startTimer;
+      _textMesh.text = GetTimeToStringFormat(currentTime);
       if (_displayCoroutine != null)
       {
         StopCoroutine(_displayCoroutine);
@@ -87,17 +62,27 @@ namespace Assets.Scripts.UI
 
     public IEnumerator DisplayTimer()
     {
-      currentTime -= currentTime - Time.time;
-      int minutes = (int)currentTime / 60;
-      int seconds = (int)currentTime % 60;
+      _textMesh.color = Color.white;
+      Debug.Log("strtrtrt");
+      do
+      {
+        currentTime --;
+        if (currentTime == _stopTime)
+          _textMesh.color = Color.red;
 
-      _textMesh.text = $"{minutes}:{seconds}";
-      yield return new WaitForSeconds(1);
+        _textMesh.text = GetTimeToStringFormat(currentTime);
+        yield return new WaitForSeconds(1f);
+      }
+      while (currentTime > _stopTime);
+      yield return new WaitForSeconds(1f);
     }
 
-    public void SetTimerText()
+    private string GetTimeToStringFormat(float time)
     {
-      _textMesh.text = currentTime.ToString("00.00");
+      int minutes = (int)time / 60;
+      int seconds = (int)time % 60;
+
+      return $"{minutes.ToString("00")}:{seconds.ToString("00")}";
     }
   }
 }

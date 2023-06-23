@@ -78,7 +78,7 @@ namespace Assets.Scripts
       GameUi.SetActive(true);
       currentLevel = 1;
       TextManager.Instance.SetText(0);
-      Timer.Instance.StartTimer(StartTime);
+      Timer.Instance.StartTimer(StartTime*60f);
     }
 
     public void ShowMenu()
