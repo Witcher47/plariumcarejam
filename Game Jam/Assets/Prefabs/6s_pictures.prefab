@@ -256,7 +256,7 @@ GameObject:
   - component: {fileID: 6006274625848954389}
   - component: {fileID: 8971817318903670730}
   m_Layer: 0
-  m_Name: "\u043B\u044E\u0434\u0438 \u0437 \u0432\u0438\u043B\u0430\u043C\u0438"
+  m_Name: kapkan
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -318,7 +318,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 58355e45ace5cb94d94b2af79c17aef1, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 9ac90659fb9e30642acb1ca81c67fb3a, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
