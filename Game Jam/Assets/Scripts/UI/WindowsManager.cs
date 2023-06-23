@@ -36,6 +36,7 @@ namespace Assets.Scripts
 
       gameController = GetComponent<GameController>();
       Source = GetComponent<AudioSource>();
+      Timer.Instance.OnTimerExpire += ShowGameOver;
 
       Victory.SetActive(false);
       GameOver.SetActive(false);

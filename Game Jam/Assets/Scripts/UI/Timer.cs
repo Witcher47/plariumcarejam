@@ -20,6 +20,14 @@ namespace Assets.Scripts.UI
     float _stopTime;
     private bool isRunning = false;
 
+    public event Action OnTimerExpire; 
+    public event Action OnTextTimer;
+    public event Action OnAnimationChange;
+
+    public int AnimationChangeSeconds; 
+
+    public float TextTimer;
+
     void Awake()
     {
       Instance = this;
@@ -29,6 +37,10 @@ namespace Assets.Scripts.UI
     public void StartTimer(float startingTime)
     {
       _startTime = startingTime;
+
+      if(AnimationChangeSeconds == 0)
+        AnimationChangeSeconds = (int)_startTime / 4;
+
       if (_displayCoroutine != null)
       {
         StopCoroutine(_displayCoroutine);
@@ -36,6 +48,7 @@ namespace Assets.Scripts.UI
       currentTime = _startTime;
       isRunning = true;
 
+      _textMesh.text = GetTimeToStringFormat(currentTime);
       _displayCoroutine = StartCoroutine("DisplayTimer");
     }
 
@@ -63,17 +76,20 @@ namespace Assets.Scripts.UI
     public IEnumerator DisplayTimer()
     {
       _textMesh.color = Color.white;
-      Debug.Log("strtrtrt");
       do
       {
         currentTime --;
         if (currentTime == _stopTime)
           _textMesh.color = Color.red;
 
+        if (currentTime % AnimationChangeSeconds == 0)
+          OnAnimationChange?.Invoke();
+
         _textMesh.text = GetTimeToStringFormat(currentTime);
         yield return new WaitForSeconds(1f);
       }
       while (currentTime > _stopTime);
+      OnTimerExpire?.Invoke();
       yield return new WaitForSeconds(1f);
     }
 
