@@ -14,6 +14,7 @@ namespace Assets.Scripts
 
     public static TextManager Instance;
     private TMP_Text _textMesh;
+    private AudioSource _audioSource;
     private string _currentText;
 
     private Coroutine _displayCoroutine;
@@ -35,21 +36,22 @@ namespace Assets.Scripts
     public Dictionary<int, string> Level1Text = new Dictionary<int, string>
     {
       { 0, " - Що Вас турбує? З чим пришли?"},
-      { 1, " - О, бачу вас це бентежить"},
-      { 2, " - Зробіть глобокий вдох"},
-      { 3, " - Подумайте про щось приємне"},
-      { 4, ""},
-      { 5, ""},
-      { 6, ""},
-      { 7, ""},
-      { 8, ""},
-      { 9, ""}
+      { 1, " - О, бачу вас це бентежить."},
+      { 2, " - Зробіть глобокий вдох."},
+      { 3, " - Подумайте про щось приємне."},
+      { 4, " - Що ви відчуваєте, коли так дивитеся на ситуацію?"},
+      { 5, " - Чого боїтесь? Розкажіть, як саме ви боїтесь?"},
+      { 6, " - Наскільки сильний страх, якщо 0 зовсім не страшно, 10 максимально страшно?"},
+      { 7, " - Ви хочете контролювати те, чого не можете аби не відчувати тривогу?"},
+      { 8, " - Ви відчуваєте зовнішню провину чи внутрішню?"},
+      { 9, " - Як ви інтерпретуєте для себе те, що сталося?"}
     };
 
     void Awake()
     {
       Instance = this;
       _textMesh = GetComponent<TMP_Text>();
+      _audioSource = GetComponent<AudioSource>();
     }
 
     public void SetText(int paintingNumber)
@@ -78,6 +80,7 @@ namespace Assets.Scripts
         {
           _textMesh.text = _textMesh.text.Substring(0, _textMesh.text.Length - leadingChar.Length);
         }
+        _audioSource.Play();
         _textMesh.text += c;
         _textMesh.text += leadingChar;
         if(NeedAStop(c))
@@ -86,6 +89,7 @@ namespace Assets.Scripts
         yield return new WaitForSeconds(timeBtwChars);
       }
 
+      _audioSource.Stop();
       if (leadingChar != "")
       {
         _textMesh.text = _textMesh.text.Substring(0, _textMesh.text.Length - leadingChar.Length);

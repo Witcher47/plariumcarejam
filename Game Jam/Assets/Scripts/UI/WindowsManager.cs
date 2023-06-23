@@ -1,3 +1,4 @@
+using Game;
 using UnityEngine;
 using UnityEngine.Video;
 
@@ -49,11 +50,13 @@ namespace Assets.Scripts
 
     public void ShowLevel()
     {
+      var gameController = GetComponent<GameController>();
       PreloaderAnimator.Instance.Play("Start_Level2");
       Logo.active = false;
       Intro.active = false;
       Victory.active = false;
       GameOver.active = false;
+      gameController.StartLevel();
       CommentsText.active = true;
       currentLevel = 1;
       TextManager.Instance.SetText(0);
