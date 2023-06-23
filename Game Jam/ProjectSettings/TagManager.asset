@@ -35,9 +35,15 @@ TagManager:
   - 
   - 
   - 
-  - 
-  - 
+  - Vovk
+  - Background
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Vovk
+    uniqueID: 306444591
+    locked: 0
+  - name: Back
+    uniqueID: 459747913
     locked: 0
