@@ -10,6 +10,7 @@ namespace Assets.Scripts
     public GameObject Level1;
     public GameObject Victory;
     public GameObject GameOver;
+    public GameObject CommentsText;
 
     private int currentLevel = 0;
 
@@ -24,6 +25,7 @@ namespace Assets.Scripts
       Level1.active = false;
       Victory.active = false;
       GameOver.active = false;
+      CommentsText.active = false;
 
       Intro.active = true;
       var introVideo = Intro.GetComponentInChildren<VideoPlayer>();
@@ -43,6 +45,7 @@ namespace Assets.Scripts
       Intro.active = false;
       Victory.active = false;
       GameOver.active = false;
+      CommentsText.active = false;
     }
 
     public void ShowLevel()
@@ -53,7 +56,9 @@ namespace Assets.Scripts
       Intro.active = false;
       Victory.active = false;
       GameOver.active = false;
+      CommentsText.active = true;
       currentLevel = 1;
+      TextManager.Instance.SetText(0);
     }
 
     public void ShowGameOver()
