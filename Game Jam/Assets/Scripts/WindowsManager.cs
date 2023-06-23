@@ -19,15 +19,15 @@ public class WindowsManager : MonoBehaviour
 
   public void ShowLevel(VideoPlayer vp)
   {
-    vp.Stop();
-    Level1.active = true;
+    //vp.Stop();
     //Level1.active = true;
-    //PreloaderAnimator.Instance.Play("Start_Level");
+    PreloaderAnimator.Instance.Play("Start_Level2");
     //PreloaderAnimator.Instance.Play("Game_Over2");
 
-    PreloaderAnimator.Instance.Play("Game_Over2");
+    //PreloaderAnimator.Instance.Play("Game_Over2");
+    Level1.active = true;
     //PreloaderAnimator.Instance.Play("Start_Level2");
-
+    vp.Stop();
     Intro.active = false;
   }
 

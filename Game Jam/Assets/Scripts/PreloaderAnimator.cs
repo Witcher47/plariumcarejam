@@ -16,24 +16,24 @@ public class PreloaderAnimator : MonoBehaviour
         _animator.SetTrigger(name);
     }
 
-    private bool _isVictory;
-    public void Play(string name, bool isVictory)
-    {
-        _isVictory = isVictory;
-        _animator.SetTrigger(name);
-    }
+  //  private bool _isVictory;
+  //  public void Play(string name, bool isVictory)
+  //  {
+  //      _isVictory = isVictory;
+  //      _animator.SetTrigger(name);
+  //  }
 
-  public void Restart()
-  {
-    if (_isVictory)
-    {
-      var windowsManager = FindObjectOfType<WindowsManager>();
-      windowsManager.ToNextState();
-    }
-    else
-    {
-      var windowsManager = FindObjectOfType<WindowsManager>();
-      windowsManager.ShowEnd();
-    }
-  }
+  //public void Restart()
+  //{
+  //  if (_isVictory)
+  //  {
+  //    var windowsManager = FindObjectOfType<WindowsManager>();
+  //    windowsManager.ToNextState();
+  //  }
+  //  else
+  //  {
+  //    var windowsManager = FindObjectOfType<WindowsManager>();
+  //    windowsManager.ShowEnd();
+  //  }
+  //}
 }
