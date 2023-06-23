@@ -20,6 +20,7 @@ public class WindowsManager : MonoBehaviour
   public void ShowLevel(VideoPlayer vp)
   {
     vp.Stop();
+    Level1.active = true;
     //Level1.active = true;
     //PreloaderAnimator.Instance.Play("Start_Level");
     //PreloaderAnimator.Instance.Play("Game_Over2");
