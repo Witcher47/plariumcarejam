@@ -1,4 +1,5 @@
 using Game;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.Video;
 
@@ -12,6 +13,8 @@ namespace Assets.Scripts
     public GameObject GameOver;
     public GameObject GameUi;
     public GameObject Menu;
+
+    private  AudioSource Source;
     private GameController gameController;
 
     private int currentLevel = 0;
@@ -23,10 +26,12 @@ namespace Assets.Scripts
       GameOver.GetComponentInChildren<ButtonExitScript>().ActionDelegate += ExitGame;
       GameOver.GetComponentInChildren<ButtonRestartScript>().ActionDelegate += Restart;
       Logo.GetComponentInChildren<ButtonScript>().ActionDelegate += ShowLevel;
-      //GameUi.GetComponentInChildren<ButtonScript>().ActionDelegate += ShowMenu;
+      GameUi.GetComponentInChildren<ButtonScript>().ActionDelegate += ShowMenu;
       Menu.GetComponentInChildren<ButtonExitScript>().ActionDelegate += ExitGame;
       Menu.GetComponentInChildren<ButtonRestartScript>().ActionDelegate += Restart;
+
       gameController = GetComponent<GameController>();
+      Source = GetComponent<AudioSource>();
 
       Victory.SetActive(false);
       GameOver.SetActive(false);
@@ -46,12 +51,15 @@ namespace Assets.Scripts
       if(vp != null)
       vp.Stop();
       PreloaderAnimator.Instance.Play("Start_Level2");
+      if(Source != null)
+      StartCoroutine(FadeIn(Source, 0.7f));
       //PreloaderAnimator.Instance.Play("Game_Over2");
       Logo.SetActive(true);
       Intro.SetActive(false);
       Victory.SetActive(false);
       GameOver.SetActive(false);
       GameUi.SetActive(false);
+      Menu.SetActive(false);
     }
 
     public void ShowLevel()
@@ -61,6 +69,7 @@ namespace Assets.Scripts
       Intro.SetActive(false);
       Victory.SetActive(false);
       GameOver.SetActive(false);
+      Menu.SetActive(false);
       gameController.StartLevel();
       GameUi.SetActive(true);
       currentLevel = 1;
@@ -69,6 +78,7 @@ namespace Assets.Scripts
 
     public void ShowMenu()
     {
+      Debug.Log("1");
       Menu.SetActive(true);
       Logo.SetActive(false);
       Intro.SetActive(false);
@@ -105,7 +115,7 @@ namespace Assets.Scripts
       {
         case 1:
           {
-            gameController.StartLevel();
+            ShowLevel();
             break;
           }
         default:
@@ -119,6 +129,38 @@ namespace Assets.Scripts
     public void ExitGame()
     {
       Application.Quit();
+    }
+
+    public IEnumerator FadeOut(AudioSource audioSource, float FadeTime)
+    {
+      float startVolume = audioSource.volume;
+
+      while (audioSource.volume > 0)
+      {
+        audioSource.volume -= startVolume * Time.deltaTime / FadeTime;
+
+        yield return null;
+      }
+
+      audioSource.Stop();
+      audioSource.volume = startVolume;
+      //levelCanLoad = true;
+    }
+
+    public IEnumerator FadeIn(AudioSource audioSource, float FadeTime)
+    {
+      float startVolume = 0.2f;
+
+      audioSource.volume = 0;
+      audioSource.Play();
+
+      while (audioSource.volume < 1.0f)
+      {
+        audioSource.volume += startVolume * Time.deltaTime / FadeTime;
+
+        yield return null;
+      }
+      audioSource.volume = 1f;
     }
 
   }
