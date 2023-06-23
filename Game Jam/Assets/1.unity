@@ -555,7 +555,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Intro: {fileID: 1190001577}
+  Logo: {fileID: 0}
   Level1: {fileID: 1646154910}
+  Victory: {fileID: 0}
+  GameOver: {fileID: 0}
 --- !u!1 &1190001577
 GameObject:
   m_ObjectHideFlags: 0

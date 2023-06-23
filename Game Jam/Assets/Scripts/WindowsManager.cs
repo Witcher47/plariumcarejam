@@ -1,47 +1,80 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Video;
 
-public class WindowsManager : MonoBehaviour
+namespace Assets.Scripts
 {
-  public GameObject Intro;
-  public GameObject Level1;
-
-  void Start()
+  public class WindowsManager : MonoBehaviour
   {
-    Intro.active = true;
-    Level1.active = false;
-    var introVideo = Intro.GetComponentInChildren<VideoPlayer>();
-    introVideo.Play();
-    introVideo.loopPointReached += ShowLevel;
-  }
+    public GameObject Intro;
+    public GameObject Logo;
+    public GameObject Level1;
+    public GameObject Victory;
+    public GameObject GameOver;
 
-  public void ShowLevel(VideoPlayer vp)
-  {
-    //vp.Stop();
-    //Level1.active = true;
-    PreloaderAnimator.Instance.Play("Start_Level2");
-    //PreloaderAnimator.Instance.Play("Game_Over2");
+    private int currentLevel = 0;
 
-    //PreloaderAnimator.Instance.Play("Game_Over2");
-    Level1.active = true;
-    //PreloaderAnimator.Instance.Play("Start_Level2");
-    vp.Stop();
-    Intro.active = false;
-  }
+    void Start()
+    {
+      Victory.GetComponentInChildren<ButtonExitScript>().ActionDelegate += ExitGame;
+      Victory.GetComponentInChildren<ButtonRestartScript>().ActionDelegate += Restart;
+      GameOver.GetComponentInChildren<ButtonExitScript>().ActionDelegate += ExitGame;
+      GameOver.GetComponentInChildren<ButtonRestartScript>().ActionDelegate += Restart;
 
-  public void ToNextState()
-  {
+      Level1.active = false;
+      Victory.active = false;
+      GameOver.active = false;
 
-    PreloaderAnimator.Instance.Play("Start_Level2");
-    Level1.active = true;
+      Intro.active = true;
+      var introVideo = Intro.GetComponentInChildren<VideoPlayer>();
+      introVideo.Play();
+      introVideo.loopPointReached += ShowLogo;
+    }
 
-  }
+    public void ShowLogo(VideoPlayer vp)
+    {
+      vp.Stop();
+      //Level1.active = true;
+      PreloaderAnimator.Instance.Play("Start_Level2");
+      //PreloaderAnimator.Instance.Play("Game_Over2");
+      Level1.active = true;
+      //vp.Stop();
+      Intro.active = false;
+    }
 
-  public void ShowEnd()
-  {
-    PreloaderAnimator.Instance.Play("Start_Level2");
-    Level1.active = true;
+    public void ShowLevel()
+    { 
+      currentLevel = 1;
+    }
+
+    public void ShowGameOver()
+    { 
+    }
+
+    public void ShowVictory()
+    {
+      currentLevel = 0;
+    }
+
+    public void Restart()
+    {
+      switch (currentLevel)
+      {
+        case 1:
+          {
+            ShowLevel();
+            break;
+          }
+        default:
+          {
+            //ShowLogo();
+            break;
+          }
+      }
+    }
+
+    public void ExitGame()
+    {
+      Application.Quit();
+    }
   }
 }
