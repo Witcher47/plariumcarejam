@@ -1,6 +1,8 @@
+using Assets.Scripts.UI;
 using Game;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.Video;
 
 namespace Assets.Scripts
@@ -13,6 +15,7 @@ namespace Assets.Scripts
     public GameObject GameOver;
     public GameObject GameUi;
     public GameObject Menu;
+    public float StartTime;
 
     private  AudioSource Source;
     private GameController gameController;
@@ -21,6 +24,7 @@ namespace Assets.Scripts
 
     void Start()
     {
+      SceneManager.UnloadSceneAsync("Level_1");
       Victory.GetComponentInChildren<ButtonExitScript>().ActionDelegate += ExitGame;
       Victory.GetComponentInChildren<ButtonRestartScript>().ActionDelegate += Restart;
       GameOver.GetComponentInChildren<ButtonExitScript>().ActionDelegate += ExitGame;
@@ -74,11 +78,12 @@ namespace Assets.Scripts
       GameUi.SetActive(true);
       currentLevel = 1;
       TextManager.Instance.SetText(0);
+      Timer.Instance.StartTimer(StartTime);
     }
 
     public void ShowMenu()
     {
-      Debug.Log("1");
+      Timer.Instance.StopTimer();
       Menu.SetActive(true);
       Logo.SetActive(false);
       Intro.SetActive(false);
