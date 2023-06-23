@@ -6,34 +6,33 @@ namespace Assets.Scripts.Vovkulaka
   public class VovkulakaAnimation : MonoBehaviour
   {
     public static VovkulakaAnimation Instance;
-    private Animator _animator;
+    public Animator _animator;
 
     private Dictionary<int, string> TriggerHierarcy = new Dictionary<int, string>
     {
-      { 1, "play1"},
       { 2, "play2"},
       { 3, "play3"},
       { 4, "play4"},
+      { 5, "play5"},
     };
 
-    public int currentState;
+    private int currentState;
 
     void Awake()
     {
       Instance = this;
-      _animator = GetComponentInChildren<Animator>();
-      currentState = 0;
-      PlayNextAnimation();
+      //_animator = GetComponent<Animator>();
+      currentState = 1;
     }
 
     public void PlayNextAnimation()
     {
-      if (currentState < 4)
-        currentState++;
-      if (TriggerHierarcy.ContainsKey(currentState))
-      {
-        _animator.SetTrigger(TriggerHierarcy[currentState]);
-      }
+      //if (currentState < 4)
+      //  currentState++;
+      //if (TriggerHierarcy.ContainsKey(currentState))
+      //{
+      //  _animator.SetTrigger(TriggerHierarcy[currentState]);
+      //}
     }
 
     public void PlayVictoryAnomation()

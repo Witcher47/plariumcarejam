@@ -1,4 +1,5 @@
 using Assets.Scripts.UI;
+using Assets.Scripts.Vovkulaka;
 using Game;
 using System.Collections;
 using UnityEngine;
@@ -80,6 +81,7 @@ namespace Assets.Scripts
       currentLevel = 1;
       TextManager.Instance.SetText(0);
       Timer.Instance.StartTimer(StartTime*60f);
+      Timer.Instance.OnAnimationChange += VovkulakaAnimation.Instance.PlayNextAnimation;
     }
 
     public void ShowMenu()

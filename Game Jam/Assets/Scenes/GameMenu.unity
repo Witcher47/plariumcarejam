@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.18028352, g: 0.22571376, b: 0.30692244, a: 1}
+  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -2109,8 +2109,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: b610210df8fb8d84aa053d0d17ca7083, type: 2}
-  m_sharedMaterial: {fileID: -8220339544782341412, guid: b610210df8fb8d84aa053d0d17ca7083, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 17a229a9f6b001e46ab130b8f07a7b51, type: 2}
+  m_sharedMaterial: {fileID: -1329347302722655945, guid: 17a229a9f6b001e46ab130b8f07a7b51, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -3074,7 +3074,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1538349825
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3872,6 +3872,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e1d5f22ffbeac44f9f05dc352f3378b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  AnimationChangeSeconds: 0
+  TextTimer: 0
 --- !u!114 &1684292140
 MonoBehaviour:
   m_ObjectHideFlags: 0
