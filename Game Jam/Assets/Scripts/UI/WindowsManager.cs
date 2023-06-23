@@ -7,7 +7,6 @@ namespace Assets.Scripts
   {
     public GameObject Intro;
     public GameObject Logo;
-    public GameObject Level1;
     public GameObject Victory;
     public GameObject GameOver;
     public GameObject CommentsText;
@@ -21,16 +20,17 @@ namespace Assets.Scripts
       GameOver.GetComponentInChildren<ButtonExitScript>().ActionDelegate += ExitGame;
       GameOver.GetComponentInChildren<ButtonRestartScript>().ActionDelegate += Restart;
       Logo.GetComponentInChildren<ButtonScript>().ActionDelegate += ShowLevel;
-
-      Level1.active = false;
+      
       Victory.active = false;
       GameOver.active = false;
       CommentsText.active = false;
 
       Intro.active = true;
       var introVideo = Intro.GetComponentInChildren<VideoPlayer>();
-      introVideo.Play();
-      introVideo.loopPointReached += ShowLogo;
+      //introVideo.Play();
+      //introVideo.loopPointReached += ShowLogo;
+
+      ShowLogo(introVideo);
     }
 
     public void ShowLogo(VideoPlayer vp)
@@ -40,7 +40,6 @@ namespace Assets.Scripts
       PreloaderAnimator.Instance.Play("Start_Level2");
       //PreloaderAnimator.Instance.Play("Game_Over2");
       Logo.active = true;
-      Level1.active = false;
       //vp.Stop();
       Intro.active = false;
       Victory.active = false;
@@ -51,7 +50,6 @@ namespace Assets.Scripts
     public void ShowLevel()
     {
       PreloaderAnimator.Instance.Play("Start_Level2");
-      Level1.active = true;
       Logo.active = false;
       Intro.active = false;
       Victory.active = false;
