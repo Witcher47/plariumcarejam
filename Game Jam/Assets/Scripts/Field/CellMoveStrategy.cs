@@ -1,12 +1,16 @@
 ﻿using System;
+using System.Numerics;
 using UnityEngine;
+using Vector3 = UnityEngine.Vector3;
 
 namespace Game.Field
 {
   public class CellMoveStrategyBase : ICellMoveStrategy
   {
-    private Camera _camera;
+    public Vector3? Direction { get; private set; }
 
+    private Camera _camera;
+    
     private Vector3 _startScreenPosition;
     private Vector3 _startMousePosition;
 
@@ -19,20 +23,31 @@ namespace Game.Field
     {
       _startScreenPosition = _camera.WorldToScreenPoint(position);
       _startMousePosition = _camera.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, _startScreenPosition.z));
+      Direction = null;
     }
 
-    public Vector3 GetPositionOffsetFor(Vector3 direction)
+    public bool TryGetPositionOffsetFor(out Vector3 offset)
     {
       var curMousePosition = _camera.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, _startScreenPosition.z));
-      var offset = curMousePosition - _startMousePosition;
+      offset = curMousePosition - _startMousePosition;
+      if (!Direction.HasValue)
+      {
+        if (Mathf.Abs(offset.x - offset.y) < 0.000001f)
+          return false;
+
+        Direction = Mathf.Abs(offset.x) > Mathf.Abs(offset.y) 
+          ? new Vector3(Mathf.Sign(offset.x), 0f, 0f) 
+          : new Vector3(0f, Mathf.Sign(offset.y), 0f);
+      }
+      
       _startMousePosition = curMousePosition;
       
-      if (direction != Vector3.left && direction != Vector3.right)
+      if (Direction == Vector3.up || Direction == Vector3.down)
         offset = new Vector3(0f, offset.y, 0f);
-      if (direction != Vector3.up && direction != Vector3.down)
+      if (Direction == Vector3.right || Direction == Vector3.left)
         offset = new Vector3(offset.x, 0f, 0f);
       
-      return offset;
+      return true;
     }
   }
 }
