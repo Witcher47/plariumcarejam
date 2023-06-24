@@ -36,6 +36,7 @@ namespace Game.Field
 
     public bool EnableMove = true;
 
+    public event Action OnSelectFail;
     public event Action OnPostitionChanged;
 
     private AudioSource _audioSource;
@@ -44,6 +45,9 @@ namespace Game.Field
     private List<List<CellView>> _groups;
 
     private ICellMoveStrategy _moveStrategy;
+
+    private int _failedMoveCount = 0;
+    private float _moveLastTime = 0f;
 
         private void Start()
         {
@@ -169,16 +173,16 @@ namespace Game.Field
             }
         }
 
-    private void OnStartDrag(CellView view)
-    {
-      if (UseSound)
-        _audioSource.Play();
+        private void OnStartDrag(CellView view)
+        {
+          if (UseSound)
+            _audioSource.Play();
 
-      if (!EnableMove)
-        return;
+          if (!EnableMove)
+            return;
 
-      _moveStrategy.StartMove(view.transform.position);
-    }
+          _moveStrategy.StartMove(view.transform.position);
+        }
         
         private void OnDragCell(CellView view)
         {
@@ -202,6 +206,7 @@ namespace Game.Field
 
             void Move(CellView view)
             {
+                _moveLastTime = Time.realtimeSinceStartup;
                 view.DragInProgress = true;
                 
                 var moveTo = view.transform.position + offset;
@@ -236,7 +241,15 @@ namespace Game.Field
         }
 
         private void OnDragComplete(CellView view)
-        {           
+        {
+            if (_moveLastTime - Time.realtimeSinceStartup < 2f)
+                _failedMoveCount++;
+            if (_failedMoveCount == 3)
+            {
+                _failedMoveCount = 0;
+                OnSelectFail?.Invoke();
+            }
+
             if(UseSound)
               _audioSource.Stop();
             var groupIdx = FindGroup(view);
