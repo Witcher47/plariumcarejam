@@ -29,29 +29,33 @@ namespace Game.Field
                 IsFree = free;
             }
         }
+        
     [SerializeField] public bool UseSound = false;
+    [SerializeField] private Vector2 _cellSize;
+    [SerializeField] private Camera _camera;
 
     public bool EnableMove = true;
 
+    public event Action OnPostitionChanged;
+
     private AudioSource _audioSource;
 
-    [SerializeField] private Vector2 _cellSize;
-        [SerializeField] private Camera _camera;
+    private Cell[,] _field;
+    private List<List<CellView>> _groups;
+
+    private ICellMoveStrategy _moveStrategy;
+
+        private void Start()
+        {
+          _moveStrategy = new CellMoveStrategyBase(_camera);
+          if (UseSound)
+            _audioSource = GetComponent<AudioSource>();
+
+          EnableMove = true;
+        }
         
-        private Cell[,] _field;
-        private List<List<CellView>> _groups;
-
-        private ICellMoveStrategy _moveStrategy;
-
-    private void Start()
-    {
-      _moveStrategy = new CellMoveStrategyBase(_camera);
-      if (UseSound)
-        _audioSource = GetComponent<AudioSource>();
-
-      EnableMove = true;
-    }
-        
+        public List<CellView> GetGroup(int idx) => _groups[idx];    
+    
         public void Build(Level level)
         {
             PrepareGroups(level);
@@ -273,7 +277,10 @@ namespace Game.Field
 
             var groupIdx = FindGroup(view);
             if (groupIdx == -1 || _groups[groupIdx].All(v => v.MoveCompleted))
+            {
                 UpdateDirections();
+                OnPostitionChanged?.Invoke();
+            }
         }
 
         private void SetFreePosition(CellView view)

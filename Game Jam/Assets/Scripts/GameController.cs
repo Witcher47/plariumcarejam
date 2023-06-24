@@ -13,6 +13,8 @@ namespace Game
     {
         private const string PathTemplate = "Level_";
 
+        public event Action OnWinning;
+
         private string CurLevelName => PathTemplate + (_curLevelIdx + 1);
         private Level CurLevel => _levels[_curLevelIdx];
         
@@ -74,6 +76,7 @@ namespace Game
             }
 
             _curGameField.Build(CurLevel);
+            _curGameField.OnPostitionChanged += CheckWin;
         }
 
     public void EnableMove()
@@ -85,6 +88,18 @@ namespace Game
     {
       _curGameField.EnableMove = false;
     }
+
+    private void CheckWin()
+    {
+        var cells = _curGameField.GetGroup(CurLevel.Condition.GroupIdx);
+        foreach (var position in CurLevel.Condition.Positions)
+        {
+            if (cells.All(c => c.CellPosition != position))
+                return;
+        }
+        
+        OnWinning?.Invoke();
+    }
   }
   
 
@@ -95,6 +110,7 @@ namespace Game
         public LevelCell[] Cells;
         public Group[] Groups;
         public Vector2int[] EmptyPositions;
+        public WinCondition Condition;
 
         public bool IsEmptyPosition(int x, int y) => EmptyPositions.Any(i => i.X == x && i.Y == y);
     }
@@ -106,6 +122,13 @@ namespace Game
         public CellView Prefab;
     }
 
+    [Serializable]
+    public struct WinCondition
+    {
+        public int GroupIdx;
+        public Vector2int[] Positions;
+    }
+    
     [Serializable]
     public struct Group
     {
@@ -127,6 +150,6 @@ namespace Game
         public static Vector2int operator +(Vector2int a, Vector2int b) => new (a.X + b.X, a.Y + b.Y);
         public static Vector2int operator -(Vector2int a, Vector2int b) => new (a.X - b.X, a.Y - b.Y);
         public static bool operator ==(Vector2int a, Vector2int b) => a.X == b.X && a.Y == b.Y;
-        public static bool operator !=(Vector2int a, Vector2int b) => a.X != b.X && a.Y != b.Y;
+        public static bool operator !=(Vector2int a, Vector2int b) => a.X != b.X || a.Y != b.Y;
     }
 }
