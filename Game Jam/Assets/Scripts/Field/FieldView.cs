@@ -77,7 +77,7 @@ namespace Game.Field
                     
                     var cellPrefab = level.Cells.First(x => x.Position.X == i && x.Position.Y == j).Prefab;
                     var cellView = Instantiate(cellPrefab, 
-                        new Vector3(_cellSize.x * i, -_cellSize.y * j, 0f) + cellPrefab.PositionOffset,
+                        new Vector3(_cellSize.x * i, -_cellSize.y * j, 0f),
                         Quaternion.Euler(0, 90, 0));
                     cellView.transform.SetParent(transform, false);
                     cellView.Init(new Vector2int(i, j));

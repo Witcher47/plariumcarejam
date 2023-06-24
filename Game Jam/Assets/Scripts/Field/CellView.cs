@@ -17,8 +17,6 @@ namespace Game.Field
     public event Action<CellView> OnDragComplete;
     public event Action<CellView> OnPositionChanged;
 
-    public Vector3 PositionOffset;
-
     public void Init(Vector2int cellPosition)
     {
       CellPosition = cellPosition;
