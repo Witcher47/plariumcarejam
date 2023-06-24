@@ -465,6 +465,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0f0940b7ad33bce4686a47c5ef351986, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  UseSound: 1
+  EnableMove: 1
   _cellSize: {x: 7, y: 5.5}
   _camera: {fileID: 1193849215}
 --- !u!4 &1230285078

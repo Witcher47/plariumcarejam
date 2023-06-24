@@ -27,7 +27,7 @@ namespace Assets.Scripts
 
     void Start()
     {
-      //SceneManager.UnloadSceneAsync("Level_1");
+      SceneManager.UnloadSceneAsync("Level_1");
       Victory.GetComponentInChildren<ButtonExitScript>().ActionDelegate += ExitGame;
       Victory.GetComponentInChildren<ButtonRestartScript>().ActionDelegate += Restart;
       GameOver.GetComponentInChildren<ButtonExitScript>().ActionDelegate += ExitGame;
@@ -87,11 +87,13 @@ namespace Assets.Scripts
       Timer.Instance.OnTimerExpire += ShowGameOver;
       Timer.Instance.OnTextTimer += TextManager.Instance.PrintNextText;
       GameUi.GetComponentInChildren<ButtonScript>().enabled = true;
+      gameController.EnableMove();
     }
 
     public void ShowMenu()
     {
       Debug.Log("menu");
+      gameController.DisableMove();
       Timer.Instance.StopTimer();
       Menu.SetActive(true);
       Logo.SetActive(false);
@@ -105,6 +107,7 @@ namespace Assets.Scripts
 
     public void CloseMenu()
     {
+      gameController.EnableMove();
       Timer.Instance.ResumeTimer();
       Menu.SetActive(false);
       Logo.SetActive(false);
