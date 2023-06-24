@@ -136,7 +136,7 @@ namespace Assets.Scripts
     private void ShowVictory()
     {
       currentLevel = 0;
-
+      VovkulakaAnimation.Instance.PlayVictoryAnomation();
       Victory.SetActive(true);
       GameOver.SetActive(false);
       //Menu.SetActive(false);

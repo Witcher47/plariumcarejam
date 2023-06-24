@@ -99,7 +99,7 @@ namespace Game
             if (cells.All(c => c.CellPosition != position))
                 return;
         }
-        
+      //Debug.Log("win GC");
         OnWinning?.Invoke();
     }
 
