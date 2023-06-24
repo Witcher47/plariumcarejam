@@ -247,7 +247,7 @@ namespace Game.Field
             if (_failedMoveCount == 3)
             {
                 _failedMoveCount = 0;
-                OnSelectFail?.Invoke();
+                //OnSelectFail?.Invoke();
             }
 
             if(UseSound)
