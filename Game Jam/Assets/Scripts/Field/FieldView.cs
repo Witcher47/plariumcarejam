@@ -242,7 +242,7 @@ namespace Game.Field
 
         private void OnDragComplete(CellView view)
         {
-            if (_moveLastTime - Time.realtimeSinceStartup < 0.5f)
+            if (Time.realtimeSinceStartup - _moveLastTime < 0.5f)
                 _failedMoveCount++;
             if (_failedMoveCount == 3)
             {
