@@ -15,7 +15,7 @@ namespace Assets.Scripts
     public GameObject Victory;
     public GameObject GameOver;
     public GameObject GameUi;
-    public GameObject Menu;
+    //public GameObject Menu;
 
     public float StartTime;
     public int TextChangeSeconds;
@@ -28,15 +28,15 @@ namespace Assets.Scripts
     void Start()
     {
       //SceneManager.UnloadSceneAsync("Level_1");
-      Victory.GetComponentInChildren<ButtonExitScript>().ActionDelegate += ExitGame;
-      Victory.GetComponentInChildren<ButtonRestartScript>().ActionDelegate += Restart;
-      GameOver.GetComponentInChildren<ButtonExitScript>().ActionDelegate += ExitGame;
-      GameOver.GetComponentInChildren<ButtonRestartScript>().ActionDelegate += Restart;
+      //Victory.GetComponentInChildren<ButtonExitScript>().ActionDelegate += ExitGame;
+      //Victory.GetComponentInChildren<ButtonRestartScript>().ActionDelegate += Restart;
+      //GameOver.GetComponentInChildren<ButtonExitScript>().ActionDelegate += ExitGame;
+      //GameOver.GetComponentInChildren<ButtonRestartScript>().ActionDelegate += Restart;
       Logo.GetComponentInChildren<ButtonScript>().ActionDelegate += ShowLevel;
-      GameUi.GetComponentInChildren<ButtonScript>().ActionDelegate += ShowMenu;
-      Menu.GetComponentInChildren<ButtonExitScript>().ActionDelegate += ExitGame;
-      Menu.GetComponentInChildren<ButtonRestartScript>().ActionDelegate += Restart;
-      Menu.GetComponentInChildren<ButtonCloseScript>().ActionDelegate += CloseMenu;
+      GameUi.GetComponentInChildren<ButtonScript>().ActionDelegate += Restart;
+      //Menu.GetComponentInChildren<ButtonExitScript>().ActionDelegate += ExitGame;
+      //Menu.GetComponentInChildren<ButtonRestartScript>().ActionDelegate += Restart;
+      //Menu.GetComponentInChildren<ButtonCloseScript>().ActionDelegate += CloseMenu;
 
       gameController = GetComponent<GameController>();
       gameController.OnWinning += ShowVictory;
@@ -45,7 +45,7 @@ namespace Assets.Scripts
       Victory.SetActive(false);
       GameOver.SetActive(false);
       GameUi.SetActive(false);
-      Menu.SetActive(false);
+      //Menu.SetActive(false);
 
       Intro.SetActive(true);
       var introVideo = Intro.GetComponentInChildren<VideoPlayer>();
@@ -68,7 +68,7 @@ namespace Assets.Scripts
       Victory.SetActive(false);
       GameOver.SetActive(false);
       GameUi.SetActive(false);
-      Menu.SetActive(false);
+      //Menu.SetActive(false);
     }
 
     public void ShowLevel()
@@ -80,7 +80,7 @@ namespace Assets.Scripts
       Intro.SetActive(false);
       Victory.SetActive(false);
       GameOver.SetActive(false);
-      Menu.SetActive(false);
+      //Menu.SetActive(false);
       gameController.StartLevel();
       GameUi.SetActive(true);
       currentLevel = 1;
@@ -97,7 +97,7 @@ namespace Assets.Scripts
       Debug.Log("menu");
       gameController.DisableMove();
       Timer.Instance.StopTimer();
-      Menu.SetActive(true);
+      //Menu.SetActive(true);
       Logo.SetActive(false);
       Intro.SetActive(false);
       Victory.SetActive(false);
@@ -111,7 +111,7 @@ namespace Assets.Scripts
     {
       gameController.EnableMove();
       Timer.Instance.ResumeTimer();
-      Menu.SetActive(false);
+      //Menu.SetActive(false);
       Logo.SetActive(false);
       Intro.SetActive(false);
       Victory.SetActive(false);
@@ -124,7 +124,7 @@ namespace Assets.Scripts
     public void ShowGameOver()
     {
       GameOver.SetActive(true);
-      Menu.SetActive(false);
+      //Menu.SetActive(false);
       Logo.SetActive(false);
       Intro.SetActive(false);
       Victory.SetActive(false);
@@ -138,7 +138,7 @@ namespace Assets.Scripts
 
       Victory.SetActive(true);
       GameOver.SetActive(false);
-      Menu.SetActive(false);
+      //Menu.SetActive(false);
       Logo.SetActive(false);
       Intro.SetActive(false);
       GameUi.SetActive(false);

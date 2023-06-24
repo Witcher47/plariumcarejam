@@ -17,6 +17,16 @@ namespace Assets.Scripts.Vovkulaka
       { 5, "play5"},
     };
 
+    private Dictionary<int, string> Victory = new Dictionary<int, string>
+    {
+      { 2, "play2ToFinal"},
+      { 3, "play3ToFinal"},
+      { 4, "play4ToFinal"},
+      { 5, "play5ToFinal"},
+    };
+
+    
+
     private int currentState;
 
     void Awake()
@@ -52,7 +62,24 @@ namespace Assets.Scripts.Vovkulaka
 
     public void PlayVictoryAnomation()
     {
-      
+      if (_animator == null)
+        _animator = GetComponentInChildren<Animator>();
+
+      if (Victory.ContainsKey(currentState))
+      {
+        _animator.SetTrigger(Victory[currentState]);
+      }
+
+    }
+
+    public void PlayTransitionAnimation()
+    {
+      _animator.SetTrigger("Totransition");
+    }
+
+    public void PlayLoop()
+    {
+      _animator.SetTrigger("finalLoop");
     }
 
     public void ResetState()
