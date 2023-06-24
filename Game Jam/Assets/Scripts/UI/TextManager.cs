@@ -19,33 +19,32 @@ namespace Assets.Scripts
 
     private Coroutine _displayCoroutine;
 
-    //public Dictionary<int, string> Level1Text = new Dictionary<int, string>
-    //{
-    //  { 0, ""},
-    //  { 1, ""},
-    //  { 2, ""},
-    //  { 3, ""},
-    //  { 4, ""},
-    //  { 5, ""},
-    //  { 6, ""},
-    //  { 7, ""},
-    //  { 8, ""},
-    //  { 9, ""}
-    //};
-
     public Dictionary<int, string> Level1Text = new Dictionary<int, string>
     {
-      { 0, " - Що Вас турбує? З чим пришли?"},
-      { 1, " - О, бачу вас це бентежить."},
-      { 2, " - Зробіть глобокий вдох."},
-      { 3, " - Подумайте про щось приємне."},
-      { 4, " - Що ви відчуваєте, коли так дивитеся на ситуацію?"},
-      { 5, " - Чого боїтесь? Розкажіть, як саме ви боїтесь?"},
-      { 6, " - Наскільки сильний страх, якщо 0 зовсім не страшно, 10 максимально страшно?"},
-      { 7, " - Ви хочете контролювати те, чого не можете аби не відчувати тривогу?"},
-      { 8, " - Ви відчуваєте зовнішню провину чи внутрішню?"},
-      { 9, " - Як ви інтерпретуєте для себе те, що сталося?"}
+      { 0, " - Доброго дня. Що Вас турбує? З чим завiтали?"},
+      { 1, " - Бачу Вас це бентежить."},
+      { 2, " - Зробіть глибокий вдох."},
+      { 3, " - Ви впевненi що саме це було вашим тригером?"},
+      { 4, " - Що Ви відчуваєте, коли так дивитися на ситуацію?"},
+      { 5, " - Чого боїтесь? Розкажіть, як саме Ви боїтесь?"},
+      { 6, " - Розкажіть, як саме Ви боїтесь?"},
+      { 7, " - Наскільки сильний страх, якщо 0 зовсім не страшно, 10 максимально страшно?"},
+      { 8, " - Ви хочете контролювати те, чого не можете аби не відчувати тривогу?"},
+      { 9, " - Ви відчуваєте зовнішню провину чи внутрішню?"},
+      { 10, " - Як Ви інтерпретуєте для себе те, що сталося?"},
+      { 11, " - Чому Ви згадали саме цей приклад?"},
+      { 12, " - Як би Ви мали змогу щось змiнити у той час, щоб Ви зробили?"},
+      { 13, " - Зробiть глибокий вдох i дорахуйте до десяти."},
+      { 14, " - Помiркуйте про щось приємне."},
+      { 15, " - Я впевнений, що разом ми знайдемо вихiд з цієї ситуації."},
+      { 16, " - Я впевнений, що разом ми знайдемо вихiд з цієї ситуації."},
+      { 17, " - Зараз я попрошу Вас вигадати метафору для цієї ситуації."},
+      { 18, " - Якщо Ви чекаєте, що я відповім на запитання за Вас, то це не так."},
+      { 19, " - Іноді час лікує психологічні травми."},
+      { 20, " - Дякую що так довіряєте мені."},
     };
+
+    private int currentTextNumber = 0;
 
     void Awake()
     {
@@ -54,12 +53,19 @@ namespace Assets.Scripts
       _audioSource = GetComponent<AudioSource>();
     }
 
+    public void PrintNextText()
+    {
+      currentTextNumber++;
+      SetText(currentTextNumber);
+    }
+
     public void SetText(int paintingNumber)
     {
       _textMesh.text = string.Empty;
       if (Level1Text.ContainsKey(paintingNumber))
       {
         _currentText = Level1Text[paintingNumber];
+        currentTextNumber = paintingNumber;
         if (_displayCoroutine != null)
         {
           StopCoroutine(_displayCoroutine);
@@ -67,7 +73,7 @@ namespace Assets.Scripts
         _displayCoroutine = StartCoroutine("TypeWriter");
       }
       else
-      _currentText = string.Empty;
+        _currentText = string.Empty;
     }
 
     public IEnumerator TypeWriter()
@@ -83,10 +89,10 @@ namespace Assets.Scripts
         _audioSource.Play();
         _textMesh.text += c;
         _textMesh.text += leadingChar;
-        if(NeedAStop(c))
+        if (NeedAStop(c))
           yield return new WaitForSeconds(deleyBtwSentance);
         else
-        yield return new WaitForSeconds(timeBtwChars);
+          yield return new WaitForSeconds(timeBtwChars);
       }
 
       _audioSource.Stop();

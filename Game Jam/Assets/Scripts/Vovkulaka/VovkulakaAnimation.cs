@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Assets.Scripts.UI;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Assets.Scripts.Vovkulaka
@@ -20,19 +21,34 @@ namespace Assets.Scripts.Vovkulaka
 
     void Awake()
     {
+      Debug.Log("vovk");
       Instance = this;
-      //_animator = GetComponent<Animator>();
-      currentState = 1;
+      _animator = GetComponentInChildren<Animator>();
+      currentState = 2;
+    }
+
+    public void Start()
+    {
+      Debug.Log("st vovk");
+      Instance = this;
+      _animator = GetComponentInChildren<Animator>();
+      currentState = 2;
     }
 
     public void PlayNextAnimation()
     {
-      //if (currentState < 4)
-      //  currentState++;
-      //if (TriggerHierarcy.ContainsKey(currentState))
-      //{
-      //  _animator.SetTrigger(TriggerHierarcy[currentState]);
-      //}
+      Debug.Log("play");
+      if(_animator == null)
+        _animator = GetComponentInChildren<Animator>();
+
+      if (currentState < 5)
+        currentState++;
+
+      Debug.Log($"cs {currentState}");
+      if (TriggerHierarcy.ContainsKey(currentState))
+      {
+        _animator.SetTrigger(TriggerHierarcy[currentState]);
+      }
     }
 
     public void PlayVictoryAnomation()
@@ -42,7 +58,7 @@ namespace Assets.Scripts.Vovkulaka
 
     public void ResetState()
     {
-      currentState = 0;
+      currentState = 1;
       PlayNextAnimation();
     }
   }

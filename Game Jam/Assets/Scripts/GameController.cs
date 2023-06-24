@@ -36,8 +36,12 @@ namespace Game
 
         private IEnumerator Load()
         {
-            if(levelIsLoaded)
-              SceneManager.UnloadSceneAsync(CurLevelName);
+      if (levelIsLoaded)
+      {
+        SceneManager.UnloadSceneAsync(CurLevelName);
+        Timer.Instance.OnAnimationChange -= VovkulakaAnimation.Instance.PlayNextAnimation;
+
+      }
             var asyncLoad = SceneManager.LoadSceneAsync(CurLevelName, LoadSceneMode.Additive);
             
             Debug.Log("Loading progress:");
@@ -51,7 +55,9 @@ namespace Game
             PrepareScene();
             BuildLevel();
             levelIsLoaded = true;
-        }
+
+      Timer.Instance.OnAnimationChange += VovkulakaAnimation.Instance.PlayNextAnimation;
+    }
 
         private void PrepareScene()
         {

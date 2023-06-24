@@ -37,7 +37,6 @@ namespace Assets.Scripts
 
       gameController = GetComponent<GameController>();
       Source = GetComponent<AudioSource>();
-      Timer.Instance.OnTimerExpire += ShowGameOver;
 
       Victory.SetActive(false);
       GameOver.SetActive(false);
@@ -81,7 +80,9 @@ namespace Assets.Scripts
       currentLevel = 1;
       TextManager.Instance.SetText(0);
       Timer.Instance.StartTimer(StartTime*60f);
-      Timer.Instance.OnAnimationChange += VovkulakaAnimation.Instance.PlayNextAnimation;
+      //Timer.Instance.OnAnimationChange += VovkulakaAnimation.Instance.PlayNextAnimation;
+      Timer.Instance.OnTimerExpire += ShowGameOver;
+      Timer.Instance.OnTextTimer += TextManager.Instance.PrintNextText;
     }
 
     public void ShowMenu()
@@ -103,6 +104,7 @@ namespace Assets.Scripts
       Intro.SetActive(false);
       Victory.SetActive(false);
       GameUi.SetActive(false);
+      VovkulakaAnimation.Instance.ResetState();
     }
 
     public void ShowVictory()
@@ -169,6 +171,11 @@ namespace Assets.Scripts
         yield return null;
       }
       audioSource.volume = 1f;
+    }
+
+    public void PlayVovkAnim()
+    {
+      VovkulakaAnimation.Instance.PlayNextAnimation();
     }
 
   }

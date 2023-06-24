@@ -24,9 +24,8 @@ namespace Assets.Scripts.UI
     public event Action OnTextTimer;
     public event Action OnAnimationChange;
 
-    public int AnimationChangeSeconds; 
-
-    public float TextTimer;
+    public int AnimationChangeSeconds;
+    public int TextChangeSeconds;
 
     void Awake()
     {
@@ -40,6 +39,9 @@ namespace Assets.Scripts.UI
 
       if(AnimationChangeSeconds == 0)
         AnimationChangeSeconds = (int)_startTime / 4;
+
+      if (TextChangeSeconds == 0)
+        TextChangeSeconds = (int)_startTime / 20;
 
       if (_displayCoroutine != null)
       {
@@ -84,6 +86,9 @@ namespace Assets.Scripts.UI
 
         if (currentTime % AnimationChangeSeconds == 0)
           OnAnimationChange?.Invoke();
+
+        if(currentTime % TextChangeSeconds == 0)
+          OnTextTimer?.Invoke();
 
         _textMesh.text = GetTimeToStringFormat(currentTime);
         yield return new WaitForSeconds(1f);

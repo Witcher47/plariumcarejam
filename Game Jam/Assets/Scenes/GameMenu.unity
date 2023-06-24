@@ -1244,7 +1244,7 @@ MonoBehaviour:
   GameOver: {fileID: 2101969827}
   GameUi: {fileID: 1567449073}
   Menu: {fileID: 1538349824}
-  StartTime: 1
+  StartTime: 0.5
 --- !u!114 &821896099
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3873,7 +3873,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   AnimationChangeSeconds: 0
-  TextTimer: 0
+  TextChangeSeconds: 10
 --- !u!114 &1684292140
 MonoBehaviour:
   m_ObjectHideFlags: 0
