@@ -83,8 +83,6 @@ namespace Game
 
     public void DisableMove()
     {
-
-      Debug.Log($"DisableMove");
       _curGameField.EnableMove = false;
     }
   }

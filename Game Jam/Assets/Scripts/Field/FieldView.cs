@@ -170,7 +170,6 @@ namespace Game.Field
       if (UseSound)
         _audioSource.Play();
 
-      Debug.Log($"{EnableMove}");
       if (!EnableMove)
         return;
 
