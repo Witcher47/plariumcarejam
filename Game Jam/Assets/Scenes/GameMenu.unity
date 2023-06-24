@@ -1244,7 +1244,8 @@ MonoBehaviour:
   GameOver: {fileID: 2101969827}
   GameUi: {fileID: 1567449073}
   Menu: {fileID: 1538349824}
-  StartTime: 0.5
+  StartTime: 2
+  TextChangeSeconds: 5
 --- !u!114 &821896099
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2134,8 +2135,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 25
-  m_fontSizeBase: 25
+  m_fontSize: 40
+  m_fontSizeBase: 40
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
