@@ -31,7 +31,6 @@ namespace Game.Field
         }
         
         [SerializeField] private Vector2 _cellSize;
-        [SerializeField] private CellView _cellPrefab;
         [SerializeField] private Camera _camera;
         
         private Cell[,] _field;
@@ -68,7 +67,11 @@ namespace Game.Field
                     if (_field[i, j].IsFree)
                         continue;
                     
-                    var cellView = Instantiate(_cellPrefab, new Vector3(_cellSize.x * i, -_cellSize.y * j, 0f), Quaternion.identity, transform);
+                    var cellPrefab = level.Cells.First(x => x.Position.X == i && x.Position.Y == j).Prefab;
+                    var cellView = Instantiate(cellPrefab, 
+                        new Vector3(_cellSize.x * i, -_cellSize.y * j, 0f) + cellPrefab.PositionOffset,
+                        Quaternion.Euler(0, 90, 0));
+                    cellView.transform.SetParent(transform, false);
                     cellView.Init(new Vector2int(i, j));
                     cellView.OnStartDrag += OnStartDrag;
                     cellView.OnDrag += OnDragCell;
@@ -242,9 +245,6 @@ namespace Game.Field
 
         private void CellPositionChanged(CellView view)
         {
-            //var freePosition = view.CellPosition;
-            //_field[freePosition.X, freePosition.Y].IsFree = true;
-
             var direction = _moveStrategy.Direction.Value.ToVector2Int();
             var occupatePosition = new Vector2int(view.CellPosition.X + direction.X, view.CellPosition.Y - direction.Y);
             _field[occupatePosition.X, occupatePosition.Y].IsFree = false;

@@ -36,12 +36,11 @@ namespace Game
 
         private IEnumerator Load()
         {
-      if (levelIsLoaded)
-      {
-        SceneManager.UnloadSceneAsync(CurLevelName);
-        Timer.Instance.OnAnimationChange -= VovkulakaAnimation.Instance.PlayNextAnimation;
-
-      }
+            if (levelIsLoaded)
+            {
+                SceneManager.UnloadSceneAsync(CurLevelName);
+                Timer.Instance.OnAnimationChange -= VovkulakaAnimation.Instance.PlayNextAnimation;
+            }
             var asyncLoad = SceneManager.LoadSceneAsync(CurLevelName, LoadSceneMode.Additive);
             
             Debug.Log("Loading progress:");
@@ -56,8 +55,8 @@ namespace Game
             BuildLevel();
             levelIsLoaded = true;
 
-      Timer.Instance.OnAnimationChange += VovkulakaAnimation.Instance.PlayNextAnimation;
-    }
+          Timer.Instance.OnAnimationChange += VovkulakaAnimation.Instance.PlayNextAnimation;
+        }
 
         private void PrepareScene()
         {
@@ -83,9 +82,10 @@ namespace Game
     {
         public Vector2int Size;
         public LevelCell[] Cells;
-        public Vector2int EmptyPosition;
+        public Group[] Groups;
+        public Vector2int[] EmptyPositions;
 
-        public bool IsEmptyPosition(int x, int y) => EmptyPosition.X == x && EmptyPosition.Y == y;
+        public bool IsEmptyPosition(int x, int y) => EmptyPositions.Any(i => i.X == x && i.Y == y);
     }
 
     [Serializable]
@@ -93,6 +93,12 @@ namespace Game
     {
         public Vector2int Position;
         public CellView Prefab;
+    }
+
+    [Serializable]
+    public struct Group
+    {
+        public Vector2int[] Positions;
     }
 
     [Serializable]
@@ -107,6 +113,9 @@ namespace Game
             Y = y;
         }
         
-        public static Vector2int operator +(Vector2int a, Vector2int b) => new Vector2int(a.X + b.X, a.Y + b.Y);
+        public static Vector2int operator +(Vector2int a, Vector2int b) => new (a.X + b.X, a.Y + b.Y);
+        public static Vector2int operator -(Vector2int a, Vector2int b) => new (a.X - b.X, a.Y - b.Y);
+        public static bool operator ==(Vector2int a, Vector2int b) => a.X == b.X && a.Y == b.Y;
+        public static bool operator !=(Vector2int a, Vector2int b) => a.X != b.X && a.Y != b.Y;
     }
 }

@@ -1,7 +1,6 @@
 ﻿using System;
 using Game.Tools;
 using UnityEngine;
-using Random = UnityEngine.Random;
 
 namespace Game.Field
 {
@@ -18,10 +17,7 @@ namespace Game.Field
     public event Action<CellView> OnDragComplete;
     public event Action<CellView> OnPositionChanged;
 
-    private void Start()
-    {
-      GetComponent<MeshRenderer>().material.color = Color.white * Random.value;
-    }
+    public Vector3 PositionOffset;
 
     public void Init(Vector2int cellPosition)
     {

@@ -32,7 +32,7 @@ namespace Game.Field
       offset = curMousePosition - _startMousePosition;
       if (!Direction.HasValue)
       {
-        if (Mathf.Abs(offset.x - offset.y) < 0.000001f)
+        if (Mathf.Abs(offset.x - offset.y) < 0.0000001f)
           return false;
 
         Direction = Mathf.Abs(offset.x) > Mathf.Abs(offset.y) 
