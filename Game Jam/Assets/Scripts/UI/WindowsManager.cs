@@ -86,10 +86,12 @@ namespace Assets.Scripts
       //Timer.Instance.OnAnimationChange += VovkulakaAnimation.Instance.PlayNextAnimation;
       Timer.Instance.OnTimerExpire += ShowGameOver;
       Timer.Instance.OnTextTimer += TextManager.Instance.PrintNextText;
+      GameUi.GetComponentInChildren<ButtonScript>().enabled = true;
     }
 
     public void ShowMenu()
     {
+      Debug.Log("menu");
       Timer.Instance.StopTimer();
       Menu.SetActive(true);
       Logo.SetActive(false);
@@ -97,11 +99,12 @@ namespace Assets.Scripts
       Victory.SetActive(false);
       GameOver.SetActive(false);
       GameUi.SetActive(true);
+
+      GameUi.GetComponentInChildren<ButtonScript>().enabled = false;
     }
 
     public void CloseMenu()
     {
-      Debug.Log("close");
       Timer.Instance.ResumeTimer();
       Menu.SetActive(false);
       Logo.SetActive(false);
@@ -109,6 +112,8 @@ namespace Assets.Scripts
       Victory.SetActive(false);
       GameOver.SetActive(false);
       GameUi.SetActive(true);
+
+      GameUi.GetComponentInChildren<ButtonScript>().enabled = true;
     }
 
     public void ShowGameOver()
