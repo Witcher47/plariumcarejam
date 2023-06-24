@@ -33,7 +33,7 @@ namespace Assets.Scripts.UI
       _textMesh = GetComponent<TMP_Text>();
     }
 
-    public void StartTimer(float startingTime)
+    public void StartTimer(float startingTime, int textSeconds)
     {
       _startTime = startingTime;
 
@@ -41,7 +41,7 @@ namespace Assets.Scripts.UI
         AnimationChangeSeconds = (int)_startTime / 4;
 
       if (TextChangeSeconds == 0)
-        TextChangeSeconds = (int)_startTime / 20;
+        TextChangeSeconds = textSeconds == 0 ?  (int)_startTime / 20 : textSeconds;
 
       if (_displayCoroutine != null)
       {

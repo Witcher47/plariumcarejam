@@ -16,7 +16,9 @@ namespace Assets.Scripts
     public GameObject GameOver;
     public GameObject GameUi;
     public GameObject Menu;
+
     public float StartTime;
+    public int TextChangeSeconds;
 
     private  AudioSource Source;
     private GameController gameController;
@@ -79,7 +81,7 @@ namespace Assets.Scripts
       GameUi.SetActive(true);
       currentLevel = 1;
       TextManager.Instance.SetText(0);
-      Timer.Instance.StartTimer(StartTime*60f);
+      Timer.Instance.StartTimer(StartTime*60f, TextChangeSeconds);
       //Timer.Instance.OnAnimationChange += VovkulakaAnimation.Instance.PlayNextAnimation;
       Timer.Instance.OnTimerExpire += ShowGameOver;
       Timer.Instance.OnTextTimer += TextManager.Instance.PrintNextText;
