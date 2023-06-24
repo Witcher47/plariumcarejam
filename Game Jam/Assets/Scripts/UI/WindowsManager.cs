@@ -50,10 +50,10 @@ namespace Assets.Scripts
 
       Intro.SetActive(true);
       var introVideo = Intro.GetComponentInChildren<VideoPlayer>();
-      //introVideo.Play();
-      //introVideo.loopPointReached += ShowLogo;
+      introVideo.Play();
+      introVideo.loopPointReached += ShowLogo;
 
-      ShowLogo(introVideo);
+      //ShowLogo(introVideo);
     }
 
     public void ShowLogo(VideoPlayer vp = null)
