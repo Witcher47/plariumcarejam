@@ -14,6 +14,7 @@ namespace Game
         private const string PathTemplate = "Level_";
 
         public event Action OnWinning;
+        public event Action OnFailInGame;
 
         private string CurLevelName => PathTemplate + (_curLevelIdx + 1);
         private Level CurLevel => _levels[_curLevelIdx];
@@ -76,6 +77,7 @@ namespace Game
             }
 
             _curGameField.Build(CurLevel);
+            _curGameField.OnSelectFail += FailedSelection;
             _curGameField.OnPostitionChanged += CheckWin;
         }
 
@@ -99,6 +101,11 @@ namespace Game
         }
         
         OnWinning?.Invoke();
+    }
+
+    private void FailedSelection()
+    {
+        OnFailInGame?.Invoke();
     }
   }
   

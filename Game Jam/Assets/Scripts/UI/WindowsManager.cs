@@ -40,6 +40,7 @@ namespace Assets.Scripts
 
       gameController = GetComponent<GameController>();
       gameController.OnWinning += ShowVictory;
+      gameController.OnFailInGame += CalmMessage;
       Source = GetComponent<AudioSource>();
 
       Victory.SetActive(false);
@@ -132,7 +133,7 @@ namespace Assets.Scripts
       VovkulakaAnimation.Instance.ResetState();
     }
 
-    public void ShowVictory()
+    private void ShowVictory()
     {
       currentLevel = 0;
 
@@ -142,6 +143,11 @@ namespace Assets.Scripts
       Logo.SetActive(false);
       Intro.SetActive(false);
       GameUi.SetActive(false);
+    }
+
+    private void CalmMessage()
+    {
+      TextManager.Instance.SetText(21);
     }
 
     public void Restart()
