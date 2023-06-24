@@ -124,12 +124,13 @@ namespace Assets.Scripts
 
     public void ShowGameOver()
     {
+      VovkulakaAnimation.Instance.PlayDefeatAnomation();
       GameOver.SetActive(true);
       //Menu.SetActive(false);
       Logo.SetActive(false);
       Intro.SetActive(false);
       Victory.SetActive(false);
-      GameUi.SetActive(false);
+      GameUi.SetActive(true);
       VovkulakaAnimation.Instance.ResetState();
     }
 
@@ -142,7 +143,7 @@ namespace Assets.Scripts
       //Menu.SetActive(false);
       Logo.SetActive(false);
       Intro.SetActive(false);
-      GameUi.SetActive(false);
+      GameUi.SetActive(true);
     }
 
     private void CalmMessage()

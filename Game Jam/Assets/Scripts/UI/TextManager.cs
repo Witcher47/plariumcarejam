@@ -103,6 +103,11 @@ namespace Assets.Scripts
       }
     }
 
+    public void ResetText()
+    {
+      SetText(21);
+    }
+
     private bool NeedAStop(char c)
     {
       if (c == '-')

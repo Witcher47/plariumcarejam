@@ -72,6 +72,14 @@ namespace Assets.Scripts.Vovkulaka
 
     }
 
+    public void PlayDefeatAnomation()
+    {
+      if (_animator == null)
+        _animator = GetComponentInChildren<Animator>();
+      _animator.SetTrigger("ShowEnd");
+
+    }
+
     public void PlayTransitionAnimation()
     {
       _animator.SetTrigger("Totransition");
