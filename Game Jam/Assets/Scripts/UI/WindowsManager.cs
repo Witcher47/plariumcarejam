@@ -39,6 +39,7 @@ namespace Assets.Scripts
       Menu.GetComponentInChildren<ButtonCloseScript>().ActionDelegate += CloseMenu;
 
       gameController = GetComponent<GameController>();
+      gameController.OnWinning += ShowVictory;
       Source = GetComponent<AudioSource>();
 
       Victory.SetActive(false);
