@@ -48,6 +48,8 @@ namespace Game.Field
       _moveStrategy = new CellMoveStrategyBase(_camera);
       if (UseSound)
         _audioSource = GetComponent<AudioSource>();
+
+      EnableMove = true;
     }
         
         public void Build(Level level)
@@ -167,8 +169,11 @@ namespace Game.Field
     {
       if (UseSound)
         _audioSource.Play();
+
+      Debug.Log($"{EnableMove}");
       if (!EnableMove)
         return;
+
       _moveStrategy.StartMove(view.transform.position);
     }
         

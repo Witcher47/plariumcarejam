@@ -56,7 +56,7 @@ namespace Game
             levelIsLoaded = true;
 
           Timer.Instance.OnAnimationChange += VovkulakaAnimation.Instance.PlayNextAnimation;
-        }
+    }
 
         private void PrepareScene()
         {
@@ -83,6 +83,8 @@ namespace Game
 
     public void DisableMove()
     {
+
+      Debug.Log($"DisableMove");
       _curGameField.EnableMove = false;
     }
   }
