@@ -75,7 +75,18 @@ namespace Game
 
             _curGameField.Build(CurLevel);
         }
+
+    public void EnableMove()
+    {
+      _curGameField.EnableMove = true;
     }
+
+    public void DisableMove()
+    {
+      _curGameField.EnableMove = false;
+    }
+  }
+  
 
     [Serializable]
     public class Level

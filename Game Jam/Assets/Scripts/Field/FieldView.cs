@@ -29,18 +29,26 @@ namespace Game.Field
                 IsFree = free;
             }
         }
-        
-        [SerializeField] private Vector2 _cellSize;
+    [SerializeField] public bool UseSound = false;
+
+    public bool EnableMove = true;
+
+    private AudioSource _audioSource;
+
+    [SerializeField] private Vector2 _cellSize;
         [SerializeField] private Camera _camera;
         
         private Cell[,] _field;
         private List<List<CellView>> _groups;
+
         private ICellMoveStrategy _moveStrategy;
 
-        private void Start()
-        {
-            _moveStrategy = new CellMoveStrategyBase(_camera);
-        }
+    private void Start()
+    {
+      _moveStrategy = new CellMoveStrategyBase(_camera);
+      if (UseSound)
+        _audioSource = GetComponent<AudioSource>();
+    }
         
         public void Build(Level level)
         {
@@ -155,10 +163,14 @@ namespace Game.Field
             }
         }
 
-        private void OnStartDrag(CellView view)
-        {
-            _moveStrategy.StartMove(view.transform.position);
-        }
+    private void OnStartDrag(CellView view)
+    {
+      if (UseSound)
+        _audioSource.Play();
+      if (!EnableMove)
+        return;
+      _moveStrategy.StartMove(view.transform.position);
+    }
         
         private void OnDragCell(CellView view)
         {
@@ -216,7 +228,9 @@ namespace Game.Field
         }
 
         private void OnDragComplete(CellView view)
-        {
+        {           
+            if(UseSound)
+              _audioSource.Stop();
             var groupIdx = FindGroup(view);
             if (groupIdx == -1)
             {
