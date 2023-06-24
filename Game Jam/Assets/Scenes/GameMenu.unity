@@ -1470,6 +1470,11 @@ MonoBehaviour:
         Y: 2
       - X: 1
         Y: 3
+    - Positions:
+      - X: 2
+        Y: 2
+      - X: 3
+        Y: 2
     EmptyPositions:
     - X: 0
       Y: 0
