@@ -36,6 +36,7 @@ namespace Assets.Scripts
       GameUi.GetComponentInChildren<ButtonScript>().ActionDelegate += ShowMenu;
       Menu.GetComponentInChildren<ButtonExitScript>().ActionDelegate += ExitGame;
       Menu.GetComponentInChildren<ButtonRestartScript>().ActionDelegate += Restart;
+      Menu.GetComponentInChildren<ButtonCloseScript>().ActionDelegate += CloseMenu;
 
       gameController = GetComponent<GameController>();
       Source = GetComponent<AudioSource>();
@@ -91,6 +92,18 @@ namespace Assets.Scripts
     {
       Timer.Instance.StopTimer();
       Menu.SetActive(true);
+      Logo.SetActive(false);
+      Intro.SetActive(false);
+      Victory.SetActive(false);
+      GameOver.SetActive(false);
+      GameUi.SetActive(true);
+    }
+
+    public void CloseMenu()
+    {
+      Debug.Log("close");
+      Timer.Instance.ResumeTimer();
+      Menu.SetActive(false);
       Logo.SetActive(false);
       Intro.SetActive(false);
       Victory.SetActive(false);

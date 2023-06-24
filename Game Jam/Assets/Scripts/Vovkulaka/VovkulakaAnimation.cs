@@ -21,7 +21,7 @@ namespace Assets.Scripts.Vovkulaka
 
     void Awake()
     {
-      Debug.Log("vovk");
+      //Debug.Log("vovk");
       Instance = this;
       _animator = GetComponentInChildren<Animator>();
       currentState = 2;
@@ -29,7 +29,7 @@ namespace Assets.Scripts.Vovkulaka
 
     public void Start()
     {
-      Debug.Log("st vovk");
+      //Debug.Log("st vovk");
       Instance = this;
       _animator = GetComponentInChildren<Animator>();
       currentState = 2;
@@ -37,14 +37,13 @@ namespace Assets.Scripts.Vovkulaka
 
     public void PlayNextAnimation()
     {
-      Debug.Log("play");
       if(_animator == null)
         _animator = GetComponentInChildren<Animator>();
 
       if (currentState < 5)
         currentState++;
 
-      Debug.Log($"cs {currentState}");
+      Debug.Log($"play{currentState}");
       if (TriggerHierarcy.ContainsKey(currentState))
       {
         _animator.SetTrigger(TriggerHierarcy[currentState]);
