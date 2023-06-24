@@ -4,7 +4,9 @@ namespace Game.Field
 {
   public interface ICellMoveStrategy
   {
+    Vector3? Direction { get; }
+
     void StartMove(Vector3 position);
-    Vector3 GetPositionOffsetFor(Vector3 directions);
+    bool TryGetPositionOffsetFor(out Vector3 offset);
   }
 }

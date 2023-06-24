@@ -20,13 +20,16 @@ namespace Game
         private int _curLevelIdx;
         private FieldView _curGameField;
 
-        private bool levelIsLoaded;
-
         private void Awake()
         {
             DontDestroyOnLoad(gameObject);
         }
 
+        public void Start()
+        {
+            StartLevel();
+        }
+        
         public void StartLevel()
         {
             StartCoroutine(Load());
@@ -34,8 +37,6 @@ namespace Game
 
         private IEnumerator Load()
         {
-            if(levelIsLoaded)
-              SceneManager.UnloadSceneAsync(CurLevelName);
             var asyncLoad = SceneManager.LoadSceneAsync(CurLevelName, LoadSceneMode.Additive);
             
             Debug.Log("Loading progress:");
@@ -48,7 +49,6 @@ namespace Game
 
             PrepareScene();
             BuildLevel();
-            levelIsLoaded = true;
         }
 
         private void PrepareScene()
@@ -74,17 +74,16 @@ namespace Game
     public class Level
     {
         public Vector2int Size;
-        public LevelCell[] Cells;
-        public Vector2int EmptyPosition;
+        public Group[] Groups;
+        public Vector2int[] EmptyPositions;
 
-        public bool IsEmptyPosition(int x, int y) => EmptyPosition.X == x && EmptyPosition.Y == y;
+        public bool IsEmptyPosition(int x, int y) => EmptyPositions.Any(i => i.X == x && i.Y == y);
     }
 
     [Serializable]
-    public class LevelCell
+    public struct Group
     {
-        public Vector2int Position;
-        public CellView Prefab;
+        public Vector2int[] Positions;
     }
 
     [Serializable]
@@ -99,6 +98,9 @@ namespace Game
             Y = y;
         }
         
-        public static Vector2int operator +(Vector2int a, Vector2int b) => new Vector2int(a.X + b.X, a.Y + b.Y);
+        public static Vector2int operator +(Vector2int a, Vector2int b) => new (a.X + b.X, a.Y + b.Y);
+        public static Vector2int operator -(Vector2int a, Vector2int b) => new (a.X - b.X, a.Y - b.Y);
+        public static bool operator ==(Vector2int a, Vector2int b) => a.X == b.X && a.Y == b.Y;
+        public static bool operator !=(Vector2int a, Vector2int b) => a.X != b.X && a.Y != b.Y;
     }
 }

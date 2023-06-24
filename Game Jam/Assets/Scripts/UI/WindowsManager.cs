@@ -24,15 +24,15 @@ namespace Assets.Scripts
 
     void Start()
     {
-      SceneManager.UnloadSceneAsync("Level_1");
+      //SceneManager.UnloadSceneAsync("Level_1");
       Victory.GetComponentInChildren<ButtonExitScript>().ActionDelegate += ExitGame;
       Victory.GetComponentInChildren<ButtonRestartScript>().ActionDelegate += Restart;
       GameOver.GetComponentInChildren<ButtonExitScript>().ActionDelegate += ExitGame;
       GameOver.GetComponentInChildren<ButtonRestartScript>().ActionDelegate += Restart;
       Logo.GetComponentInChildren<ButtonScript>().ActionDelegate += ShowLevel;
       GameUi.GetComponentInChildren<ButtonScript>().ActionDelegate += ShowMenu;
-      Menu.GetComponentInChildren<ButtonExitScript>().ActionDelegate += ExitGame;
-      Menu.GetComponentInChildren<ButtonRestartScript>().ActionDelegate += Restart;
+      //Menu.GetComponentInChildren<ButtonExitScript>().ActionDelegate += ExitGame;
+      //Menu.GetComponentInChildren<ButtonRestartScript>().ActionDelegate += Restart;
 
       gameController = GetComponent<GameController>();
       Source = GetComponent<AudioSource>();
@@ -54,7 +54,7 @@ namespace Assets.Scripts
     {
       if(vp != null)
       vp.Stop();
-      PreloaderAnimator.Instance.Play("Start_Level2");
+      //PreloaderAnimator.Instance.Play("Start_Level2");
       if(Source != null)
       StartCoroutine(FadeIn(Source, 0.7f));
       //PreloaderAnimator.Instance.Play("Game_Over2");
@@ -68,7 +68,7 @@ namespace Assets.Scripts
 
     public void ShowLevel()
     {
-      PreloaderAnimator.Instance.Play("Start_Level2");
+      //PreloaderAnimator.Instance.Play("Start_Level2");
       Logo.SetActive(false);
       Intro.SetActive(false);
       Victory.SetActive(false);

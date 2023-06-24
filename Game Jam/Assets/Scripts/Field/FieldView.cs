@@ -1,18 +1,29 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Game.Tools;
 using UnityEngine;
 
 namespace Game.Field
 {
+    [Flags]
+    public enum Directions
+    {
+        None = 0,
+        Left = 1,
+        Right = 2,
+        Up = 4,
+        Down = 8,
+    }
+    
     public class FieldView : MonoBehaviour
     {
         public class Cell
         {
-            public Vector3 Direction { get; set; }
+            public Directions Direction { get; set; }
             public bool IsFree { get; set; }
         
-            public Cell(Vector3 direction, bool free)
+            public Cell(Directions direction, bool free)
             {
                 Direction = direction;
                 IsFree = free;
@@ -20,84 +31,123 @@ namespace Game.Field
         }
         
         [SerializeField] private Vector2 _cellSize;
+        [SerializeField] private CellView _cellPrefab;
         [SerializeField] private Camera _camera;
-        [SerializeField] public bool UseSound = false;
-
-    private AudioSource _audioSource;
-
-    private Cell[,] _field;
+        
+        private Cell[,] _field;
+        private List<List<CellView>> _groups;
         private ICellMoveStrategy _moveStrategy;
 
         private void Start()
         {
             _moveStrategy = new CellMoveStrategyBase(_camera);
-            if(UseSound)
-              _audioSource = GetComponent<AudioSource>();
-             
         }
         
         public void Build(Level level)
+        {
+            PrepareGroups(level);
+            BuildCells(level);
+            UpdateDirections();
+        }
+        
+        private void PrepareGroups(Level level)
+        {
+            _groups = new List<List<CellView>>();
+            for (var i = 0; i < level.Groups.Length; i++) 
+                _groups.Add(new List<CellView>());
+        }
+
+        private void BuildCells(Level level)
         {
             _field = new Cell[level.Size.X, level.Size.Y];
             for (var i = 0; i < _field.GetLength(0); i++)
             {
                 for (var j = 0; j < _field.GetLength(1); j++)
                 {
-                    _field[i, j] = new Cell(Vector3.zero, level.IsEmptyPosition(i + 1, j + 1));
+                    _field[i, j] = new Cell(Directions.None, level.IsEmptyPosition(i, j));
                     if (_field[i, j].IsFree)
                         continue;
-
-                    var cellPrefab = level.Cells.First(x => x.Position.X == i && x.Position.Y == j).Prefab;
-                    var cellView = Instantiate(cellPrefab, new Vector3(_cellSize.x * i, -_cellSize.y * j, 0f), Quaternion.Euler(0, 90, 0));
-                    cellView.transform.SetParent(transform, false);
-                    cellView.SetPosition(new Vector2int(i, j));
+                    
+                    var cellView = Instantiate(_cellPrefab, new Vector3(_cellSize.x * i, -_cellSize.y * j, 0f), Quaternion.identity, transform);
+                    cellView.Init(new Vector2int(i, j));
                     cellView.OnStartDrag += OnStartDrag;
                     cellView.OnDrag += OnDragCell;
                     cellView.OnDragComplete += OnDragComplete;
                     cellView.OnPositionChanged += CellPositionChanged;
+
+                    var groupIdx = Array.FindIndex(level.Groups, g => g.Positions.Any(p => p.X == i && p.Y == j));
+                    if (groupIdx != -1)
+                        _groups[groupIdx].Add(cellView);
                 }
             }
-
-            UpdateDirections();
         }
 
         private void UpdateDirections()
         {
-            var freePosition = new Vector2int();
-            for (var i = 0; i < _field.GetLength(0); i++)
+            Reset();
+            UpdateFreeCellNeighbors();
+            UpdateGroupNeighbors();
+            
+            void Reset()
             {
-                for (var j = 0; j < _field.GetLength(1); j++)
+                for (var i = 0; i < _field.GetLength(0); i++)
                 {
-                    if (_field[i, j].IsFree)
+                    for (var j = 0; j < _field.GetLength(1); j++)
                     {
-                        freePosition.X = i;
-                        freePosition.Y = j;
+                        _field[i, j].Direction = Directions.None;
                     }
-
-                    _field[i, j].Direction = Vector3.zero;
                 }
             }
-            
-            if (freePosition.X - 1 >= 0)
-                _field[freePosition.X - 1, freePosition.Y].Direction = Vector3.right;
-            
-            if (freePosition.X + 1 < _field.GetLength(0))
-                _field[freePosition.X + 1, freePosition.Y].Direction = Vector3.left;
-            
-            if (freePosition.Y + 1 < _field.GetLength(1))
-                _field[freePosition.X, freePosition.Y + 1].Direction = Vector3.up;
-            
-            if (freePosition.Y - 1 >= 0)
-                _field[freePosition.X, freePosition.Y - 1].Direction = Vector3.down;
-        }
 
-        private void SetFreeCell(Cell freeCell)
-        {
-            for (var i = 0; i < _field.GetLength(0); i++)
+            void UpdateFreeCellNeighbors()
             {
-                for (var j = 0; j < _field.GetLength(1); j++)
+                for (var i = 0; i < _field.GetLength(0); i++)
                 {
-                    _field[i, j].IsFree = _field[i, j] == freeCell;
+                    for (var j = 0; j < _field.GetLength(1); j++)
+                    {
+                        if (!_field[i, j].IsFree)
+                            continue;
+                        
+                        if (i - 1 >= 0)
+                            _field[i - 1, j].Direction |= Directions.Right;
+                        if (i + 1 < _field.GetLength(0))
+                            _field[i + 1, j].Direction |= Directions.Left;
+                        if (j - 1 >= 0)
+                            _field[i, j - 1].Direction |= Directions.Down;
+                        if (j + 1 < _field.GetLength(1))
+                            _field[i, j + 1].Direction |= Directions.Up;
+                    }
+                }
+            }
+
+            void UpdateGroupNeighbors()
+            {
+                foreach (var group in _groups)
+                {
+                    foreach (var cell in group)
+                    {
+                        foreach (var cellCheck in group)
+                        {
+                            if (cell == cellCheck)
+                                continue;
+
+                            if (cell.CellPosition.Y == cellCheck.CellPosition.Y)
+                            {
+                                if (cell.CellPosition.X - cellCheck.CellPosition.X == 1)
+                                    _field[cell.CellPosition.X, cell.CellPosition.Y].Direction |= Directions.Left;
+                                if (cell.CellPosition.X - cellCheck.CellPosition.X == -1)
+                                    _field[cell.CellPosition.X, cell.CellPosition.Y].Direction |= Directions.Right;
+                            }
+
+                            if (cell.CellPosition.X == cellCheck.CellPosition.X)
+                            {
+                                if (cell.CellPosition.Y - cellCheck.CellPosition.Y == 1)
+                                    _field[cell.CellPosition.X, cell.CellPosition.Y].Direction |= Directions.Up;
+                                if (cell.CellPosition.Y - cellCheck.CellPosition.Y == -1)
+                                    _field[cell.CellPosition.X, cell.CellPosition.Y].Direction |= Directions.Down;
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -105,48 +155,137 @@ namespace Game.Field
         private void OnStartDrag(CellView view)
         {
             _moveStrategy.StartMove(view.transform.position);
-      
-           if(UseSound)
-            _audioSource.Play();
         }
         
         private void OnDragCell(CellView view)
         {
-            var possibleDirection = _field[view.CellPosition.X, view.CellPosition.Y].Direction;
-            var moveTo = view.transform.position + _moveStrategy.GetPositionOffsetFor(possibleDirection);
-            var clampXMin = view.WorldPosition.x - (possibleDirection == Vector3.left ? _cellSize.x : 0);
-            var clampXMax = view.WorldPosition.x + (possibleDirection == Vector3.right ? _cellSize.x : 0);
-            var clampYMin = view.WorldPosition.y - (possibleDirection == Vector3.down ? _cellSize.y : 0);
-            var clampYMax = view.WorldPosition.y + (possibleDirection == Vector3.up ? _cellSize.y : 0);
+            if (!_moveStrategy.TryGetPositionOffsetFor(out var offset))
+                return;
             
-            view.MoveTo = new Vector3(
-                Mathf.Clamp(moveTo.x, clampXMin, clampXMax),
-                Mathf.Clamp(moveTo.y, clampYMin, clampYMax),
-                moveTo.z);
+            var possibleDirection = _field[view.CellPosition.X, view.CellPosition.Y].Direction;
+            if (possibleDirection == Directions.None)
+                return;
+            
+            var groupIdx = FindGroup(view);
+            if (groupIdx == -1)
+            {
+                Move(view);
+            }
+            else if (GroupMovePossible(_groups[groupIdx]))
+            {
+                foreach (var cellView in _groups[groupIdx])
+                    Move(cellView);
+            }
+
+            void Move(CellView view)
+            {
+                view.DragInProgress = true;
+                
+                var moveTo = view.transform.position + offset;
+                var clampXMin = view.WorldPosition.x - (possibleDirection.HasFlag(Directions.Left) ? _cellSize.x : 0);
+                var clampXMax = view.WorldPosition.x + (possibleDirection.HasFlag(Directions.Right) ? _cellSize.x : 0);
+                var clampYMin = view.WorldPosition.y - (possibleDirection.HasFlag(Directions.Down) ? _cellSize.y : 0);
+                var clampYMax = view.WorldPosition.y + (possibleDirection.HasFlag(Directions.Up) ? _cellSize.y : 0);
+            
+                view.MoveTo = new Vector3(
+                    Mathf.Clamp(moveTo.x, clampXMin, clampXMax),
+                    Mathf.Clamp(moveTo.y, clampYMin, clampYMax),
+                    moveTo.z);
+            }
+        }
+
+        private bool GroupMovePossible(List<CellView> group)
+        {
+            var direction = _moveStrategy.Direction.Value.ToDirections();
+            return group.All(view => _field[view.CellPosition.X, view.CellPosition.Y].Direction.HasFlag(direction));
+        }
+
+        private int FindGroup(CellView view)
+        {
+            for (var i = 0; i < _groups.Count; i++)
+            {
+                var idx = _groups[i].IndexOf(view);
+                if (idx != -1)
+                    return i;
+            }
+
+            return -1;
         }
 
         private void OnDragComplete(CellView view)
         {
-           if(UseSound)
-            _audioSource.Stop();
-            var possiblePosition = view.WorldPosition + (Vector3)(_field[view.CellPosition.X, view.CellPosition.Y].Direction * _cellSize);
-            var startPosition = view.WorldPosition;
-            var currentPosition = view.transform.position;
-
-            if ((possiblePosition - currentPosition).sqrMagnitude > (startPosition - currentPosition).sqrMagnitude)
-                view.MoveTo = startPosition;
+            var groupIdx = FindGroup(view);
+            if (groupIdx == -1)
+            {
+                CompleteMove(view);
+            }
             else
-                view.MoveTo = possiblePosition;
+            {
+                foreach (var cellView in _groups[groupIdx])
+                    CompleteMove(cellView);
+            }
+            
+            void CompleteMove(CellView view)
+            {
+                view.DragInProgress = false;
+                
+                var possiblePosition = view.WorldPosition + (Vector3)(_moveStrategy.Direction * _cellSize);
+                var startPosition = view.WorldPosition;
+                var currentPosition = view.transform.position;
+
+                if ((possiblePosition - currentPosition).sqrMagnitude > (startPosition - currentPosition).sqrMagnitude)
+                    view.MoveTo = startPosition;
+                else
+                    view.MoveTo = possiblePosition;
+            }
         }
 
         private void CellPositionChanged(CellView view)
         {
-            var freePosition = view.CellPosition;
-            var freeCell = _field[freePosition.X, freePosition.Y];
-            var direction = freeCell.Direction.ToVector2Int();
-            view.SetPosition(view.CellPosition + new Vector2int(direction.X, -direction.Y));
-            SetFreeCell(freeCell);
-            UpdateDirections();
+            //var freePosition = view.CellPosition;
+            //_field[freePosition.X, freePosition.Y].IsFree = true;
+
+            var direction = _moveStrategy.Direction.Value.ToVector2Int();
+            var occupatePosition = new Vector2int(view.CellPosition.X + direction.X, view.CellPosition.Y - direction.Y);
+            _field[occupatePosition.X, occupatePosition.Y].IsFree = false;
+
+            view.CellPosition = occupatePosition;
+            
+            SetFreePosition(view);
+
+            var groupIdx = FindGroup(view);
+            if (groupIdx == -1 || _groups[groupIdx].All(v => v.MoveCompleted))
+                UpdateDirections();
         }
+
+        private void SetFreePosition(CellView view)
+       {
+           var direction = _moveStrategy.Direction.Value.ToVector2Int();
+           var prevPosition = new Vector2int(view.CellPosition.X - direction.X, view.CellPosition.Y + direction.Y);
+           
+           var groupIdx = FindGroup(view);
+           if (groupIdx == -1)
+           {
+               _field[prevPosition.X, prevPosition.Y].IsFree = true;
+               return;
+           }
+           
+           while (CellExist(prevPosition.X, prevPosition.Y))
+           {
+               if (!CellExistInGroup(prevPosition, _groups[groupIdx]))
+               {
+                   _field[prevPosition.X, prevPosition.Y].IsFree = true;
+                   return;
+               }
+               
+               prevPosition = new Vector2int(prevPosition.X - direction.X, prevPosition.Y + direction.Y);
+           }
+       }
+
+       bool CellExist(int x, int y) => 
+           x >= 0 && x < _field.GetLength(0) && y >= 0 && y < _field.GetLength(1);
+       
+       bool CellExistInGroup(Vector2int position, List<CellView> group) => 
+           group.Any(c => c.CellPosition == position);
     }
 }
